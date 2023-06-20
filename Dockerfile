@@ -33,7 +33,7 @@ RUN apt remove --purge -y $BUILD_PACKAGES $(apt-mark showauto) && \
 RUN apt update && apt install -y wget nano htop libgomp1 libcurl3-gnutls-dev telnet
 
 COPY entrypoint.sh /entrypoint.sh
-COPY run.sh /run.sh
+COPY launch_files/ /
 
 # Setup user and working directory
 RUN chown -R komodian:notarygroup /home/komodian
