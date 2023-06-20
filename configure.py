@@ -156,18 +156,18 @@ def create_compose_yaml():
         for coin in coins:
             p2pport = main_ports[coin]["p2pport"]
             rpcport = main_ports[coin]["rpcport"]
-            conf.write(f'{coin.lower()}:\n')
-            conf.write('  <<: *komodod-base\n')
-            conf.write(f'  command: ./launch_files/run_{coin}.sh\n')
-            conf.write('  ports:\n')
-            conf.write(f'    - "127.0.0.1:{p2pport}:{p2pport}"\n')
-            conf.write(f'    - "127.0.0.1:{rpcport}:{rpcport}"\n')
-            conf.write('  volumes:\n')
-            conf.write('    - <<: *zcash-params\n')      
+            conf.write(f'  {coin.lower()}:\n')
+            conf.write('    <<: *komodod-base\n')
+            conf.write(f'    command: ./launch_files/run_{coin}.sh\n')
+            conf.write('    ports:\n')
+            conf.write(f'      - "127.0.0.1:{p2pport}:{p2pport}"\n')
+            conf.write(f'      - "127.0.0.1:{rpcport}:{rpcport}"\n')
+            conf.write('    volumes:\n')
+            conf.write('      - <<: *zcash-params\n')      
             if coin == "KMD":
-                conf.write('    - /home/USERNAME/.komodo:/home/komodian/.komodo\n')
+                conf.write('      - /home/USERNAME/.komodo:/home/komodian/.komodo\n')
             else:
-                conf.write(f'    - /home/USERNAME/.komodo:/home/komodian/.komodo/{coin}\n')
+                conf.write(f'      - /home/USERNAME/.komodo:/home/komodian/.komodo/{coin}\n')
             conf.write('\n')
 
 

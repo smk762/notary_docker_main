@@ -10,6 +10,9 @@ sed "s/USERNAME/${USER}/gi" -i "docker-compose.yml"
 echo "Setting up conf files and data folders (in case of new coins)..."
 ./configure.py confs
 
+echo "Setting up launch files (in case of new coins)..."
+./configure.py launch
+
 echo "Setting up daemon clis (in case of new coins)..."
 ./configure.py clis
 ~/dPoW/iguana/listassetchains | while read chain; do
