@@ -22,5 +22,12 @@ sed "s/USERNAME/${USER}/gi" -i "docker-compose.yml"
 echo "Setting up conf files and data folders..."
 ./configure.py confs
 
+# Initialising debug log files
+echo "" > /home/$USER/.komodo/debug.log
+~/dPoW/iguana/listassetchains | while read chain; do
+    echo "" > /home/$USER/.komodo/${coin}/debug.log
+done
+
+
 echo "Building docker images..."
 docker compose build
