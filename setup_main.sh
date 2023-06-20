@@ -1,19 +1,5 @@
 #!/bin/bash
 
-generate_random_string() {
-  local length=$1
-  local output=""
-  exec 10< /dev/urandom
-  while (( ${#output} < length )); do
-    read -n $length -u 10 str
-    str=$(tr -dc 'a-zA-Z0-9' <<< "$str")
-    output="$output$str"
-  done
-  output=${output:0:$length}
-  echo "$output"
-  exec 10<&-
-}
-
 source /home/${USER}/dPoW/iguana/pubkey.txt
 if test -z "$pubkey"
 then
@@ -30,11 +16,10 @@ echo "USER_ID=${USER_ID}" >> .env
 echo "GROUP_ID=${GROUP_ID}" >> .env
 
 echo "Updating docker-compose.yml..."
-cp docker-compose.template docker-compose.yml
+./configure.py yaml
 sed "s/USERNAME/${USER}/gi" -i "docker-compose.yml"
 
 echo "Setting up conf files and data folders..."
-
 ./configure.py confs
 
 echo "Building docker images..."
