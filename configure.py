@@ -157,8 +157,15 @@ def create_compose_yaml():
             p2pport = main_ports[coin]["p2pport"]
             rpcport = main_ports[coin]["rpcport"]
             conf.write(f'  {coin.lower()}:\n')
-            conf.write('    <<: *komodod-base\n')
-            conf.write(f'    command: /run_{coin}.sh\n')
+            conf.write('    env_file:\n')
+            conf.write('      - .env\n')
+            conf.write('    build:\n')
+            conf.write('      context: .\n')
+            conf.write('      dockerfile: Dockerfile\n')
+            conf.write('      args:\n')
+            conf.write('        - USER_ID=$USER_ID\n')
+            conf.write('        - GROUP_ID=$GROUP_ID\n')
+            conf.write('        - COMMIT_HASH=156dba6\n')
             conf.write('    ports:\n')
             conf.write(f'      - "127.0.0.1:{p2pport}:{p2pport}"\n')
             conf.write(f'      - "127.0.0.1:{rpcport}:{rpcport}"\n')
@@ -168,8 +175,15 @@ def create_compose_yaml():
                 conf.write('      - /home/USERNAME/.komodo:/home/komodian/.komodo\n')
             else:
                 conf.write(f'      - /home/USERNAME/.komodo:/home/komodian/.komodo/{coin}\n')
+            conf.write("    shm_size: '2gb'\n")
+            conf.write('    restart: always\n')
+            conf.write('    logging:\n')
+            conf.write('      driver: "json-file"\n')
+            conf.write('      options:\n')
+            conf.write('        max-size: "20m"\n')
+            conf.write('        max-file: "10"\n')
+            conf.write(f'    command: /run_{coin}.sh\n')
             conf.write('\n')
-
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
