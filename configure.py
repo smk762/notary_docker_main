@@ -158,7 +158,7 @@ def create_compose_yaml():
             rpcport = main_ports[coin]["rpcport"]
             conf.write(f'  {coin.lower()}:\n')
             conf.write('    <<: *komodod-base\n')
-            conf.write(f'    command: ./launch_files/run_{coin}.sh\n')
+            conf.write(f'    command: ./run_{coin}.sh\n')
             conf.write('    ports:\n')
             conf.write(f'      - "127.0.0.1:{p2pport}:{p2pport}"\n')
             conf.write(f'      - "127.0.0.1:{rpcport}:{rpcport}"\n')
