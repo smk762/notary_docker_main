@@ -40,6 +40,3 @@ RUN chown -R komodian:notarygroup /home/komodian
 USER komodian
 
 ENTRYPOINT ["/entrypoint.sh"]
-
-# Start daemon with the data directory mounted
-CMD ["/run.sh"]
