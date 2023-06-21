@@ -24,7 +24,7 @@ echo "Setting up conf files and data folders..."
 
 # Initialising debug log files
 echo "" > /home/$USER/.komodo/debug.log
-~/dPoW/iguana/listassetchains | while read chain; do
+~/dPoW/iguana/listassetchains | while read coin; do
     echo "" > /home/$USER/.komodo/${coin}/debug.log
 done
 
