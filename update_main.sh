@@ -1,22 +1,28 @@
 #!/bin/bash
 
-echo "Updating repository..."
+# Update repo
 git pull
 
-echo "Updating docker-compose.yml  (in case of new coins..."
+# Initialising docker-compose yaml
 ./configure.py yaml
 sed "s/USERNAME/${USER}/gi" -i "docker-compose.yml"
 
-echo "Setting up conf files and data folders (in case of new coins)..."
+# Initialising conf files log files
 ./configure.py confs
 
 echo "Setting up launch files (in case of new coins)..."
 ./configure.py launch
 
-echo "Setting up daemon clis (in case of new coins)..."
+# Initialising cli binaries log files
 ./configure.py clis
 ~/dPoW/iguana/listassetchains | while read chain; do
     sudo ln -s /home/$USER/.komodo/${coin}/${coin}-cli /usr/local/bin/${coin}-cli
+done
+
+# Initialising debug log files
+echo "" > /home/$USER/.komodo/debug.log
+~/dPoW/iguana/listassetchains | while read chain; do
+    echo "" > /home/$USER/.komodo/${coin}/debug.log
 done
 
 if [ -z "$1" ]
