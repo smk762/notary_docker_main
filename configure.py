@@ -174,7 +174,7 @@ def create_compose_yaml():
             if coin == "KMD":
                 conf.write('      - /home/USERNAME/.komodo:/home/komodian/.komodo\n')
             else:
-                conf.write(f'      - /home/USERNAME/.komodo:/home/komodian/.komodo/{coin}\n')
+                conf.write(f'      - /home/USERNAME/.komodo/{coin}:/home/komodian/.komodo/{coin}\n')
             conf.write("    shm_size: '2gb'\n")
             conf.write('    restart: always\n')
             conf.write('    logging:\n')
