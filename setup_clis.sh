@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/bin/bash
 
 ./configure.py clis
 ~/dPoW/iguana/listassetchains | while read coin; do
