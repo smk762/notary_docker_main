@@ -17,6 +17,6 @@ trap 'sigterm_handler' SIGTERM
 
 # Running COIN daemon
 exec LAUNCH &
-DEBUG
+tail -f DEBUG
 
 set +x
