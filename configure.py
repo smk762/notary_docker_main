@@ -98,6 +98,21 @@ def get_launch_string(coin):
             launch_str = ' '.join(params)
             return f"komodod {launch_str} -pubkey=${{PUBKEY}}"
 
+def get_cli_string(coin) -> str:
+    if coin == 'LTC':
+        return f"litecoin-cli"
+    elif coin == 'KMD':
+        return f"komodo-cli"
+    else:
+        return f"komodo-cli -ac_name={coin}"
+
+def get_debug_string(coin) -> str:
+    if coin == 'LTC':
+        return f"~/.litecoin/debug.log"
+    elif coin == 'KMD':
+        return f"~/.komodo/debug.log"
+    else:
+        return f"~/.komodo/{coin}/debug.log"
 
 def create_clis():
     # TODO: Does not cover LTC or KMD as they do not need a wrapper
@@ -112,10 +127,28 @@ def create_clis():
 def create_launch_files():
     for coin in coins:
         filename = f"launch_files/run_{coin}.sh"
+        launch = get_launch_string(coin)
+        cli = get_cli_string(coin)
+        debug = get_debug_string(coin)
         with open(filename, 'w') as conf:
             conf.write('#!/bin/bash\n')
             conf.write("set -ex\n")
-            conf.write(f"exec {get_launch_string(coin)}\n")
+            conf.write("function exit_script(){\n")
+            conf.write('  echo "Caught stop signal..."\n')
+            conf.write(f"  {cli} stop\n")
+            conf.write("  while true; do\n")
+            conf.write("    sleep 1\n")
+            conf.write(f"    blocks=$({cli} getblockcount)\n")
+            conf.write("    if [ ${#blocks} -eq 0 ]; then\n")
+            conf.write("      break\n")
+            conf.write("    fi\n")
+            conf.write("    echo ${blocks}\n")
+            conf.write("  done\n")
+            conf.write("  exit 0\n")
+            conf.write("}\n\n")
+            conf.write("trap exit_script SIGTERM SIGKILL SIGQUIT\n\n")
+            conf.write(f"{launch} &\n")
+            conf.write(f"tail -f {debug} &\n")
         os.chmod(filename, 0o755)
 
 
