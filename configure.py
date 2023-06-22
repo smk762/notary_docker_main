@@ -120,7 +120,6 @@ def create_launch_files():
 
 
 def create_confs():
-    # TODO: Does not cover LTC
     for coin in coins:
         if coin == 'LTC':
             filename = f"{home}/.litecoin/litecoin.conf"
@@ -156,37 +155,38 @@ def create_compose_yaml():
     shutil.copy('docker-compose.template', 'docker-compose.yml')
     with open('docker-compose.yml', 'a+') as conf:
         for coin in coins:
-            p2pport = main_ports[coin]["p2pport"]
-            rpcport = main_ports[coin]["rpcport"]
-            conf.write(f'  {coin.lower()}:\n')
-            conf.write('    env_file:\n')
-            conf.write('      - .env\n')
-            conf.write('    build:\n')
-            conf.write('      context: .\n')
-            conf.write('      dockerfile: Dockerfile\n')
-            conf.write('      args:\n')
-            conf.write('        - USER_ID=$USER_ID\n')
-            conf.write('        - GROUP_ID=$GROUP_ID\n')
-            conf.write('        - COMMIT_HASH=156dba6\n')
-            conf.write('    ports:\n')
-            conf.write(f'      - "127.0.0.1:{p2pport}:{p2pport}"\n')
-            conf.write(f'      - "127.0.0.1:{rpcport}:{rpcport}"\n')
-            conf.write('    volumes:\n')
-            conf.write('      - <<: *zcash-params\n')      
-            if coin == "KMD":
-                conf.write('      - /home/USERNAME/.komodo:/home/komodian/.komodo\n')
-            else:
-                conf.write(f'      - /home/USERNAME/.komodo/{coin}:/home/komodian/.komodo/{coin}\n')
-            conf.write("    shm_size: '2gb'\n")
-            conf.write('    restart: always\n')
-            conf.write('    stop_grace_period: 2m\n')
-            conf.write('    logging:\n')
-            conf.write('      driver: "json-file"\n')
-            conf.write('      options:\n')
-            conf.write('        max-size: "20m"\n')
-            conf.write('        max-file: "10"\n')
-            conf.write(f'    command: /run_{coin}.sh\n')
-            conf.write('\n')
+            if coin not in ['LTC']:
+                p2pport = main_ports[coin]["p2pport"]
+                rpcport = main_ports[coin]["rpcport"]
+                conf.write(f'  {coin.lower()}:\n')
+                conf.write('    env_file:\n')
+                conf.write('      - .env\n')
+                conf.write('    build:\n')
+                conf.write('      context: .\n')
+                conf.write('      dockerfile: Dockerfile\n')
+                conf.write('      args:\n')
+                conf.write('        - USER_ID=$USER_ID\n')
+                conf.write('        - GROUP_ID=$GROUP_ID\n')
+                conf.write('        - COMMIT_HASH=156dba6\n')
+                conf.write('    ports:\n')
+                conf.write(f'      - "127.0.0.1:{p2pport}:{p2pport}"\n')
+                conf.write(f'      - "127.0.0.1:{rpcport}:{rpcport}"\n')
+                conf.write('    volumes:\n')
+                conf.write('      - <<: *zcash-params\n')      
+                if coin == "KMD":
+                    conf.write('      - /home/USERNAME/.komodo:/home/komodian/.komodo\n')
+                else:
+                    conf.write(f'      - /home/USERNAME/.komodo/{coin}:/home/komodian/.komodo/{coin}\n')
+                conf.write("    shm_size: '2gb'\n")
+                conf.write('    restart: always\n')
+                conf.write('    stop_grace_period: 2m\n')
+                conf.write('    logging:\n')
+                conf.write('      driver: "json-file"\n')
+                conf.write('      options:\n')
+                conf.write('        max-size: "20m"\n')
+                conf.write('        max-file: "10"\n')
+                conf.write(f'    command: /run_{coin}.sh\n')
+                conf.write('\n')
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
