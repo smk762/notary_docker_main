@@ -5,6 +5,7 @@ LABEL maintainer="smk@komodoplatform.com"
 ARG COMMIT_HASH
 ARG GROUP_ID
 ARG USER_ID
+ARG SERVICE_CLI
 RUN addgroup --gid ${GROUP_ID} notarygroup
 RUN adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} komodian
 WORKDIR /home/komodian
@@ -32,6 +33,9 @@ RUN apt remove --purge -y $BUILD_PACKAGES $(apt-mark showauto) && \
     rm -rf /var/lib/apt/lists/* 
 RUN apt update && apt install -y wget nano htop libgomp1 libcurl3-gnutls-dev telnet
 
+HEALTHCHECK --start-period=15m --interval=5m --timeout=60s CMD CMD bash /usr/local/healthcheck.sh ${SERVICE_CLI} || exit 1
+
+COPY healthcheck.sh /usr/local/bin
 COPY entrypoint.sh /entrypoint.sh
 COPY launch_files/ /
 
