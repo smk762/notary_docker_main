@@ -8,6 +8,9 @@ then
   echo "pubkey=${pubkey}" > pubkey.txt
 fi
 
+mkdir -p /home/${USER}/.zcash-params
+./fetch-params.sh
+
 rm assetchains.json
 wget https://raw.githubusercontent.com/KomodoPlatform/dPoW/season-seven/iguana/assetchains.json
 
