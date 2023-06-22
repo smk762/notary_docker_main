@@ -6,9 +6,10 @@ else
     coin=$1
 fi
 
-if [[ "$coin" == "KMD" ]]
-    then
+if [[ "$coin" == "LTC" ]] then
+    tail -f ~/.litecoin/debug.log
+elif [[ "$coin" == "KMD" ]] then
     tail -f ~/.komodo/debug.log
-    else
+else
     tail -f ~/.komodo/${coin}/debug.log
 fi

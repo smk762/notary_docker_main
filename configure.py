@@ -22,6 +22,10 @@ main_ports = {
         "p2pport": 7770,
         "rpcport": 7771
     },
+    "LTC": {
+        "p2pport": 9333,
+        "rpcport": 9332
+    },
     "CLC": {
         "p2pport": 20931,
         "rpcport": 20932
@@ -71,8 +75,17 @@ def format_param(param, value):
     return f'-{param}={value}'
 
 
+def generate_rpc_pass(length=24):
+    special_chars = "@~-_|():+"
+    rpc_chars = string.ascii_letters + string.digits + special_chars
+    return "".join(secrets.choice(rpc_chars) for _ in range(length))
+
+
 def get_launch_string(coin):
-    print(coin)
+    if coin == 'LTC':
+        return f"litecoind -pubkey=${{PUBKEY}}"
+    if coin == 'KMD':
+        return f'komodod -pubkey=${{PUBKEY}} -gen -genproclimit=1 -minrelaytxfee=0.000035 -opretmintxfee=0.004 -notary=".litecoin/litecoin.conf"'
     for i in assetchains:
         if i["ac_name"] == coin:
             params = []
@@ -83,16 +96,11 @@ def get_launch_string(coin):
                 else:
                     params.append(format_param(param, value))
             launch_str = ' '.join(params)
-            return f"komodod {launch_str} -pubkey=${{PUBKEY}} &"
-
-
-def generate_rpc_pass(length=24):
-    special_chars = "@~-_|():+"
-    rpc_chars = string.ascii_letters + string.digits + special_chars
-    return "".join(secrets.choice(rpc_chars) for _ in range(length))
+            return f"komodod {launch_str} -pubkey=${{PUBKEY}}"
 
 
 def create_clis():
+    # TODO: Does not cover LTC or KMD as they do not need a wrapper
     for coin in coins:
         with open(f"{home}/.komodo/{coin}-cli", 'w') as conf:
             if coin != 'KMD':
@@ -105,25 +113,18 @@ def create_launch_files():
     for coin in coins:
         filename = f"launch_files/run_{coin}.sh"
         with open(filename, 'w') as conf:
-            if coin == 'KMD':
-                conf.write('#!/bin/bash\n')
-                conf.write("set -euxo pipefail\n")
-                conf.write('komodod -pubkey=${PUBKEY} -gen -genproclimit=1 -minrelaytxfee=0.000035 -opretmintxfee=0.004 -notary=".litecoin/litecoin.conf" &\n')
-                conf.write("cp /usr/local/bin/komodo-cli /home/komodian/.komodo/komodo-cli\n")
-                conf.write("sleep 300 &\n")
-                conf.write("tail -f /home/komodian/.komodo/debug.log\n")
-            else:
-                conf.write('#!/bin/bash\n')
-                conf.write("set -euxo pipefail\n")
-                conf.write(f"{get_launch_string(coin)}\n")
-                conf.write("sleep 5 &\n")
-                conf.write(f"tail -f /home/komodian/.komodo/{coin}/debug.log\n")
-            os.chmod(filename, 0o755)
+            conf.write('#!/bin/bash\n')
+            conf.write("set -ex\n")
+            conf.write(f"exec {get_launch_string(coin)}\n")
+        os.chmod(filename, 0o755)
 
 
 def create_confs():
+    # TODO: Does not cover LTC
     for coin in coins:
-        if coin == 'KMD':
+        if coin == 'LTC':
+            filename = f"{home}/.litecoin/litecoin.conf"
+        elif coin == 'KMD':
             filename = f"{home}/.komodo/komodo.conf"
         else:
             filename = f"{home}/.komodo/{coin}/{coin}.conf"
@@ -151,6 +152,7 @@ def create_confs():
 
 
 def create_compose_yaml():
+    # Does not cover LTC, that sits in the template.
     shutil.copy('docker-compose.template', 'docker-compose.yml')
     with open('docker-compose.yml', 'a+') as conf:
         for coin in coins:
