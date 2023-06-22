@@ -3,6 +3,9 @@
 # Update repo
 git pull
 
+rm assetchains.json
+wget https://raw.githubusercontent.com/KomodoPlatform/dPoW/master/iguana/assetchains.json
+
 # Initialising docker-compose yaml
 ./configure.py yaml
 sed "s/USERNAME/${USER}/gi" -i "docker-compose.yml"
