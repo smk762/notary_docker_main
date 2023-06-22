@@ -8,6 +8,7 @@ then
   echo "pubkey=${pubkey}" > pubkey.txt
 fi
 
+rm assetchains.json
 wget https://raw.githubusercontent.com/KomodoPlatform/dPoW/master/iguana/assetchains.json
 
 echo "Setting up .env file..."
