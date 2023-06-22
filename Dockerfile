@@ -33,7 +33,7 @@ RUN apt remove --purge -y $BUILD_PACKAGES $(apt-mark showauto) && \
     rm -rf /var/lib/apt/lists/* 
 RUN apt update && apt install -y wget nano htop libgomp1 libcurl3-gnutls-dev telnet
 
-HEALTHCHECK --start-period=15m --interval=5m --timeout=60s CMD CMD bash /usr/local/healthcheck.sh ${SERVICE_CLI} || exit 1
+HEALTHCHECK --start-period=15m --interval=15m --timeout=60s CMD CMD bash /usr/local/healthcheck.sh ${SERVICE_CLI} || exit 1
 
 COPY healthcheck.sh /usr/local/bin
 COPY entrypoint.sh /entrypoint.sh
