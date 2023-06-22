@@ -1,22 +1,10 @@
 #!/usr/bin/env bash
 set -x
 
-pid=0
-
-sigterm_handler() {
-  echo "sigterm handler called…"
-  pid=$(pgrep komodod)
-  CLI stop
-  echo "COIN daemon terminated with PID ${pid}…"
-  wait "$pid"
-  exit 777;
-}
-
-trap 'sigterm_handler' SIGTERM
-
+trap 'CLI stop'  SIGHUP SIGINT SIGTERM
 
 # Running COIN daemon
 LAUNCH &
-tail -f DEBUG
+tail -f DEBUG & wait
 
 set +x
