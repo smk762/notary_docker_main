@@ -156,6 +156,10 @@ def create_compose_yaml():
     with open('docker-compose.yml', 'a+') as conf:
         for coin in coins:
             if coin not in ['LTC']:
+                if coin == 'KMD':
+                    cli = "komodo-cli"
+                else:
+                    cli = "komodo-cli -ac_name={coin}"
                 p2pport = main_ports[coin]["p2pport"]
                 rpcport = main_ports[coin]["rpcport"]
                 conf.write(f'  {coin.lower()}:\n')
@@ -168,6 +172,7 @@ def create_compose_yaml():
                 conf.write('        - USER_ID=$USER_ID\n')
                 conf.write('        - GROUP_ID=$GROUP_ID\n')
                 conf.write('        - COMMIT_HASH=156dba6\n')
+                conf.write(f'        - SERVICE_CLI={cli}\n')
                 conf.write('    ports:\n')
                 conf.write(f'      - "127.0.0.1:{p2pport}:{p2pport}"\n')
                 conf.write(f'      - "127.0.0.1:{rpcport}:{rpcport}"\n')
