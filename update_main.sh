@@ -4,7 +4,7 @@
 git pull
 
 rm assetchains.json
-wget https://raw.githubusercontent.com/KomodoPlatform/dPoW/master/iguana/assetchains.json
+wget https://raw.githubusercontent.com/KomodoPlatform/dPoW/season-seven/iguana/assetchains.json
 
 # Initialising docker-compose yaml
 ./configure.py yaml

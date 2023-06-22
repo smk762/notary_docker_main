@@ -1,20 +1,30 @@
-#!/bin/bash
-set -ex
-function exit_script(){
-  echo "Caught stop signal..."
-  litecoin-cli stop
-  while true; do
-    sleep 1
-    blocks=$(litecoin-cli getblockcount)
-    if [ ${#blocks} -eq 0 ]; then
-      break
-    fi
-    echo ${blocks}
-  done
-  exit 0
+#!/usr/bin/env bash
+set -x
+
+pid=0
+
+sigterm_handler() {
+  echo "sigterm handler called…"
+  if [ $pid -ne 0 ]; then
+    litecoin-cli stop
+    kill -TERM "$pid"
+    echo "LTC daemon terminated…"
+    wait "$pid"
+  fi
+  exit 777;
 }
 
-trap exit_script SIGTERM SIGKILL SIGQUIT
+trap 'kill ${!}; sigterm_handler' TERM
 
+# Running LTC daemon
 litecoind -pubkey=${PUBKEY} &
-tail -f ~/.litecoin/debug.log &
+pid="$!"
+echo "PID=$pid"
+
+# wait forever
+while true
+do
+  tail -f /dev/null & wait ${!}
+done
+
+set +x

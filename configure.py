@@ -130,25 +130,14 @@ def create_launch_files():
         launch = get_launch_string(coin)
         cli = get_cli_string(coin)
         debug = get_debug_string(coin)
-        with open(filename, 'w') as conf:
-            conf.write('#!/bin/bash\n')
-            conf.write("set -ex\n")
-            conf.write("function exit_script(){\n")
-            conf.write('  echo "Caught stop signal..."\n')
-            conf.write(f"  {cli} stop\n")
-            conf.write("  while true; do\n")
-            conf.write("    sleep 1\n")
-            conf.write(f"    blocks=$({cli} getblockcount)\n")
-            conf.write("    if [ ${#blocks} -eq 0 ]; then\n")
-            conf.write("      break\n")
-            conf.write("    fi\n")
-            conf.write("    echo ${blocks}\n")
-            conf.write("  done\n")
-            conf.write("  exit 0\n")
-            conf.write("}\n\n")
-            conf.write("trap exit_script SIGTERM SIGKILL SIGQUIT\n\n")
-            conf.write(f"{launch} &\n")
-            conf.write(f"tail -f {debug}\n")
+        with open(filename, 'w') as f:
+            with open('launch.template', 'r') as t:
+                for line in t.readlines():
+                    line = line.replace('CLI', cli)
+                    line = line.replace('COIN', coin)
+                    line = line.replace('LAUNCH', launch)
+                    f.write(line)
+            
         os.chmod(filename, 0o755)
 
 
@@ -217,7 +206,7 @@ def create_compose_yaml():
                     conf.write(f'      - /home/USERNAME/.komodo/{coin}:/home/komodian/.komodo/{coin}\n')
                 conf.write("    shm_size: '2gb'\n")
                 conf.write('    restart: always\n')
-                conf.write('    stop_grace_period: 2m\n')
+                conf.write('    stop_grace_period: 15s\n')
                 conf.write('    logging:\n')
                 conf.write('      driver: "json-file"\n')
                 conf.write('      options:\n')
