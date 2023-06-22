@@ -31,7 +31,7 @@ echo "Setting up conf files and data folders..."
 # Initialising debug log files
 echo "" > /home/$USER/.komodo/debug.log
 echo "" > /home/$USER/.litecoin/debug.log
-~/dPoW/iguana/listassetchains | while read coin; do
+./listassetchains | while read coin; do
     echo "" > /home/$USER/.komodo/${coin}/debug.log
 done
 
@@ -45,6 +45,6 @@ docker compose build
 ./configure.py clis
 sudo ln -s /home/$USER/.komodo/komodo-cli /usr/local/bin/komodo-cli
 sudo ln -s /home/$USER/.litecoin/litecoin-cli /usr/local/bin/litecoin-cli
-~/dPoW/iguana/listassetchains | while read coin; do
+./listassetchains | while read coin; do
     sudo ln -s /home/$USER/.komodo/${coin}/${coin}-cli /usr/local/bin/${coin}-cli
 done

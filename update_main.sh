@@ -18,13 +18,13 @@ echo "Setting up launch files (in case of new coins)..."
 
 # Initialising cli binaries log files
 ./configure.py clis
-~/dPoW/iguana/listassetchains | while read coin; do
+./listassetchains | while read coin; do
     sudo ln -s /home/$USER/.komodo/${coin}/${coin}-cli /usr/local/bin/${coin}-cli
 done
 
 # Initialising debug log files
 echo "" > /home/$USER/.komodo/debug.log
-~/dPoW/iguana/listassetchains | while read coin; do
+./listassetchains | while read coin; do
     echo "" > /home/$USER/.komodo/${coin}/debug.log
 done
 
