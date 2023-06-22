@@ -5,26 +5,18 @@ pid=0
 
 sigterm_handler() {
   echo "sigterm handler called…"
-  if [ $pid -ne 0 ]; then
-    CLI stop
-    kill -TERM "$pid"
-    echo "COIN daemon terminated…"
-    wait "$pid"
-  fi
+  pid=$(pgrep komodod)
+  CLI stop
+  echo "COIN daemon terminated with PID ${pid}…"
+  wait "$pid"
   exit 777;
 }
 
-trap 'kill ${!}; sigterm_handler' TERM
+trap 'sigterm_handler' SIGTERM
+
 
 # Running COIN daemon
-LAUNCH &
-pid="$!"
-echo "PID=$pid"
-
-# wait forever
-while true
-do
-  tail -f /dev/null & wait ${!}
-done
+exec LAUNCH &
+DEBUG
 
 set +x

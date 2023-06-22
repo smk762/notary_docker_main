@@ -5,26 +5,18 @@ pid=0
 
 sigterm_handler() {
   echo "sigterm handler called…"
-  if [ $pid -ne 0 ]; then
-    komodo-cli -ac_name=DOC stop
-    kill -TERM "$pid"
-    echo "DOC daemon terminated…"
-    wait "$pid"
-  fi
+  pid=$(pgrep komodod)
+  komodo-cli -ac_name=DOC stop
+  echo "DOC daemon terminated with PID ${pid}…"
+  wait "$pid"
   exit 777;
 }
 
-trap 'kill ${!}; sigterm_handler' TERM
+trap 'sigterm_handler' SIGTERM
+
 
 # Running DOC daemon
-komodod -ac_name=DOC -ac_supply=90000000000 -ac_reward=100000000 -ac_cc=3 -ac_staked=10 -addnode=209.222.101.247 -addnode=103.195.100.32 -addnode=65.21.77.109 -addnode=65.21.51.47 -pubkey=${PUBKEY} &
-pid="$!"
-echo "PID=$pid"
-
-# wait forever
-while true
-do
-  tail -f /dev/null & wait ${!}
-done
+exec komodod -ac_name=DOC -ac_supply=90000000000 -ac_reward=100000000 -ac_cc=3 -ac_staked=10 -addnode=209.222.101.247 -addnode=103.195.100.32 -addnode=65.21.77.109 -addnode=65.21.51.47 -pubkey=${PUBKEY} &
+~/.komodo/DOC/debug.log
 
 set +x

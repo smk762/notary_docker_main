@@ -30,5 +30,5 @@ services:
       options:
         max-size: "20m"
         max-file: "10"
-    command: /run_LTC.sh
+    command: ["/run_LTC.sh"]
 

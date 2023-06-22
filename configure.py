@@ -135,6 +135,7 @@ def create_launch_files():
                 for line in t.readlines():
                     line = line.replace('CLI', cli)
                     line = line.replace('COIN', coin)
+                    line = line.replace('DEBUG', debug)
                     line = line.replace('LAUNCH', launch)
                     f.write(line)
             

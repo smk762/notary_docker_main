@@ -5,26 +5,18 @@ pid=0
 
 sigterm_handler() {
   echo "sigterm handler called…"
-  if [ $pid -ne 0 ]; then
-    komodo-cli stop
-    kill -TERM "$pid"
-    echo "KMD daemon terminated…"
-    wait "$pid"
-  fi
+  pid=$(pgrep komodod)
+  komodo-cli stop
+  echo "KMD daemon terminated with PID ${pid}…"
+  wait "$pid"
   exit 777;
 }
 
-trap 'kill ${!}; sigterm_handler' TERM
+trap 'sigterm_handler' SIGTERM
+
 
 # Running KMD daemon
-komodod -pubkey=${PUBKEY} -gen -genproclimit=1 -minrelaytxfee=0.000035 -opretmintxfee=0.004 -notary=".litecoin/litecoin.conf" &
-pid="$!"
-echo "PID=$pid"
-
-# wait forever
-while true
-do
-  tail -f /dev/null & wait ${!}
-done
+exec komodod -pubkey=${PUBKEY} -gen -genproclimit=1 -minrelaytxfee=0.000035 -opretmintxfee=0.004 -notary=".litecoin/litecoin.conf" &
+~/.komodo/debug.log
 
 set +x

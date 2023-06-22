@@ -33,6 +33,7 @@ RUN apt remove --purge -y $BUILD_PACKAGES $(apt-mark showauto) && \
 RUN apt update && apt install -y wget nano htop libgomp1 libcurl3-gnutls-dev telnet
 
 HEALTHCHECK --start-period=15m --interval=15m --timeout=60s CMD CMD bash /usr/local/healthcheck.sh litecoin-cli || exit 1
+STOPSIGNAL SIGTERM
 
 COPY entrypoint.sh /entrypoint.sh
 COPY launch_files/ /
