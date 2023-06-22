@@ -1,12 +1,14 @@
 #!/bin/bash
 
-source /home/${USER}/dPoW/iguana/pubkey.txt
+source pubkey.txt
 if test -z "$pubkey"
 then
   read -p "Enter your pubkey: " pubkey
   # TODO: validate pubkey
-  echo "pubkey=${pubkey}" > /home/${USER}/dPoW/iguana/pubkey.txt
+  echo "pubkey=${pubkey}" > pubkey.txt
 fi
+
+wget https://raw.githubusercontent.com/KomodoPlatform/dPoW/master/iguana/assetchains.json
 
 echo "Setting up .env file..."
 USER_ID=$(id -u)

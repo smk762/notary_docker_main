@@ -10,7 +10,7 @@ import os
 
 home = os.path.expanduser('~')
 
-with open(f'{home}/dPoW/iguana/assetchains.json') as file:
+with open(f'assetchains.json') as file:
     assetchains = json.load(file)
 
 main_ports = {
@@ -148,7 +148,7 @@ def create_launch_files():
             conf.write("}\n\n")
             conf.write("trap exit_script SIGTERM SIGKILL SIGQUIT\n\n")
             conf.write(f"{launch} &\n")
-            conf.write(f"tail -f {debug} &\n")
+            conf.write(f"tail -f {debug}\n")
         os.chmod(filename, 0o755)
 
 
