@@ -177,6 +177,7 @@ def create_compose_yaml():
                 conf.write(f'      - /home/USERNAME/.komodo/{coin}:/home/komodian/.komodo/{coin}\n')
             conf.write("    shm_size: '2gb'\n")
             conf.write('    restart: always\n')
+            conf.write('    stop_grace_period: 2m\n')
             conf.write('    logging:\n')
             conf.write('      driver: "json-file"\n')
             conf.write('      options:\n')
