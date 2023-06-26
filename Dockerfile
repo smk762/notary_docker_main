@@ -24,7 +24,7 @@ RUN /build.sh "${COMMIT_HASH}"
 
 # Move binaries
 RUN mv /home/komodian/komodo/src/komodo-cli /usr/local/bin/komodo-cli
-RUN cp /usr/local/bin/komodo-cli /home/komodian/.komodo/komodo-cli
+RUN cp /usr/local/bin/komodo-cli /home/komodian/.komodo/komodo-cli || echo "skipping komodo-cli copy for smart chains"
 RUN mv /home/komodian/komodo/src/komodod /usr/local/bin/komodod
 RUN PATH=/usr/local/bin/:$PATH
 
