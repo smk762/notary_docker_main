@@ -19,7 +19,7 @@ echo "Setting up launch files (in case of new coins)..."
 # Initialising cli binaries log files
 ./configure.py clis
 ./listassetchains | while read coin; do
-    sudo ln -s /home/$USER/.komodo/${coin}/${coin}-cli /usr/local/bin/${coin}-cli
+    sudo ln -sf /home/$USER/.komodo/${coin}/${coin}-cli /usr/local/bin/${coin}-cli
 done
 
 # Initialising debug log files
