@@ -18,7 +18,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install $BUILD_PACKAGES -y
 
 # Build 
-COPY build_ltc.sh /build_ltc.sh
+COPY build_scripts/build_ltc.sh /build_ltc.sh
 RUN /build_ltc.sh "${COMMIT_HASH}"
 
 # Move binaries

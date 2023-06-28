@@ -98,7 +98,8 @@ def get_launch_string(coin):
             launch_str = ' '.join(params)
             return f"komodod {launch_str} -pubkey=${{PUBKEY}}"
 
-def get_cli_string(coin) -> str:
+
+def get_cli_command(coin) -> str:
     if coin == 'LTC':
         return f"litecoin-cli"
     elif coin == 'KMD':
@@ -106,56 +107,75 @@ def get_cli_string(coin) -> str:
     else:
         return f"komodo-cli -ac_name={coin}"
 
-def get_debug_string(coin) -> str:
-    if coin == 'LTC':
-        return f"~/.litecoin/debug.log"
-    elif coin == 'KMD':
-        return f"~/.komodo/debug.log"
-    else:
-        return f"~/.komodo/{coin}/debug.log"
 
-def create_clis():
-    # TODO: Does not cover LTC or KMD as they do not need a wrapper
+def get_debug_path(coin) -> str:
+    if coin == 'LTC':
+        return f"{home}/.litecoin/debug.log"
+    elif coin == 'KMD':
+        return f"{home}/.komodo/debug.log"
+    else:
+        return f"{home}/.komodo/{coin}/debug.log"
+
+
+def create_cli_wrappers():
     for coin in coins:
         with open(f"{home}/.komodo/{coin}-cli", 'w') as conf:
             if coin != 'KMD':
                 conf.write('#!/bin/bash\n')
                 conf.write(f"komodo-cli -ac_name={coin} $@\n")
-        os.chmod(f"{home}/.komodo/{coin}-cli", 0o755)
+                os.chmod(f"{home}/.komodo/{coin}-cli", 0o755)
 
 
 def create_launch_files():
     for coin in coins:
-        filename = f"launch_files/run_{coin}.sh"
+        launch_file = f"launch_files/run_{coin}.sh"
         launch = get_launch_string(coin)
-        cli = get_cli_string(coin)
-        debug = get_debug_string(coin)
-        with open(filename, 'w') as f:
-            with open('launch.template', 'r') as t:
+        cli = get_cli_command(coin)
+        debug = get_debug_path(coin)
+        with open(launch_file, 'w') as f:
+            with open('templates/launch.template', 'r') as t:
                 for line in t.readlines():
                     line = line.replace('CLI', cli)
                     line = line.replace('COIN', coin)
                     line = line.replace('DEBUG', debug)
                     line = line.replace('LAUNCH', launch)
                     f.write(line)
-            
-        os.chmod(filename, 0o755)
+            os.chmod(launch_file, 0o755)
+
+
+def get_conf_path(coin):
+    if coin == 'LTC':
+        conf_file = f"{home}/.litecoin/litecoin.conf"
+    elif coin == 'KMD':
+        conf_file = f"{home}/.komodo/komodo.conf"
+    else:
+        conf_file = f"{home}/.komodo/{coin}/{coin}.conf"
+    return conf_file
 
 
 def create_confs():
     for coin in coins:
-        if coin == 'LTC':
-            filename = f"{home}/.litecoin/litecoin.conf"
-        elif coin == 'KMD':
-            filename = f"{home}/.komodo/komodo.conf"
-        else:
-            filename = f"{home}/.komodo/{coin}/{coin}.conf"
-        folder = os.path.split(filename)[0]
+        rpcuser = generate_rpc_pass()
+        rpcpass = generate_rpc_pass()
+        
+        # Get conf file path
+        folder = os.path.split(conf_file)[0]
         if not os.path.exists(folder):
-            os.makedirs(folder)            
-        with open(filename, 'w') as conf:
-            conf.write(f'rpcuser={generate_rpc_pass()}\n')
-            conf.write(f'rpcpassword={generate_rpc_pass()}\n')
+            os.makedirs(folder)
+        conf_file = get_conf_path(coin)
+        # Use existing rpcuser and rpcpass if they exist
+        if os.path.exists(conf_file):
+            with open(conf_file, 'r') as f:
+                lines = f.readlines()
+                for line in lines:
+                    if line.startswith('rpcuser'):
+                        rpcuser = line.split('=')[1].strip()
+                    if line.startswith('rpcpassword'):
+                        rpcpass = line.split('=')[1].strip()
+            
+        with open(conf_file, 'w') as conf:
+            conf.write(f'rpcuser={rpcuser}\n')
+            conf.write(f'rpcpassword={rpcpass}\n')
             conf.write('txindex=1\n')
             conf.write('addressindex=1\n')
             conf.write('spentindex=1\n')
@@ -171,13 +191,21 @@ def create_confs():
             conf.write('addnode=103.195.100.32 # Dragonhound_DEV\n')
             conf.write('addnode=104.238.221.61\n')
             conf.write('addnode=199.127.60.142\n')
+        # create debug.log files if not existing
+        debug_file = get_debug_path(coin)
+        debug_path = os.path.split(debug_file)[0]
+        if not os.path.exists(debug_path):
+            os.makedirs(debug_path)
+        if not os.path.exists(debug_file):
+            with open(debug_file, 'w') as f:
+                f.write('')
 
 
 def create_compose_yaml():
     # Does not cover LTC, that sits in the template.
-    shutil.copy('docker-compose.template', 'docker-compose.yml')
+    shutil.copy('templates/docker-compose.template', 'docker-compose.yml')
     with open('docker-compose.yml', 'a+') as conf:
-        for coin in coins:
+        for coin in ["KMD"]:
             if coin not in ['LTC']:
                 if coin == 'KMD':
                     cli = "komodo-cli"
@@ -190,7 +218,7 @@ def create_compose_yaml():
                 conf.write('      - .env\n')
                 conf.write('    build:\n')
                 conf.write('      context: .\n')
-                conf.write('      dockerfile: Dockerfile\n')
+                conf.write('      dockerfile: Dockerfile.KMD\n')
                 conf.write('      args:\n')
                 conf.write('        - USER_ID=$USER_ID\n')
                 conf.write('        - GROUP_ID=$GROUP_ID\n')
@@ -220,7 +248,7 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         print('No arguments given, exiting.')
     elif sys.argv[1] == 'clis':
-        create_clis()
+        create_cli_wrappers()
     elif sys.argv[1] == 'confs':
         create_confs()
     elif sys.argv[1] == 'launch':

@@ -12,7 +12,7 @@ services:
       - .env
     build:
       context: .
-      dockerfile: Dockerfile_ltc
+      dockerfile: Dockerfile.LTC
       args:
         - USER_ID=$USER_ID
         - GROUP_ID=$GROUP_ID
@@ -32,4 +32,7 @@ services:
         max-size: "20m"
         max-file: "10"
     command: ["/run_LTC.sh"]
+
+
+
 

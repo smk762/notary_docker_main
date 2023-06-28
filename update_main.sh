@@ -7,36 +7,37 @@ rm assetchains.json
 wget https://raw.githubusercontent.com/KomodoPlatform/dPoW/season-seven/iguana/assetchains.json
 
 # Initialising docker-compose yaml
+echo "Setting up docker-compose yaml file..."
 ./configure.py yaml
 sed "s/USERNAME/${USER}/gi" -i "docker-compose.yml"
 
-# Initialising conf files log files
+# Initialising conf & debug.log files
+echo "Setting up conf files..."
 ./configure.py confs
 
-echo "Setting up launch files (in case of new coins)..."
+# Creating launch files
+echo "Setting up launch files..."
 ./configure.py launch
 
-# Initialising cli binaries log files
+# Build daemons
+if [ -z "$1" ]; then
+  echo "Stopping daemons..."
+  docker compose stop
+  echo "Building daemons..."
+  docker compose build
+else
+  echo "Stopping $1 daemon..."
+  docker compose stop $1
+  echo "Building $1 daemon..."
+  docker compose build $1
+fi
+
+# Initialising cli binaries & log files
 ./configure.py clis
-./listassetchains | while read coin; do
-    sudo ln -sf /home/$USER/.komodo/${coin}/${coin}-cli /usr/local/bin/${coin}-cli
-done
+./setup_clis.sh
 
-# Initialising debug log files
-echo "" > /home/$USER/.komodo/debug.log
-./listassetchains | while read coin; do
-    echo "" > /home/$USER/.komodo/${coin}/debug.log
-done
-
-if [ -z "$1" ]
-  then
-    echo "Building docker images..."
-    docker compose build $@
-    ./stop_main.sh
-    ./start_main.sh
-  else
-    echo "Building docker images..."
-    docker compose build $1 $@
-    ./stop_main.sh $1
-    ./start_main.sh $1 
+if [ -z "$1" ]; then
+  echo "Update complete! Run ./start_main.sh $1 to launch the $1 daemon container."
+else
+  echo "Update complete! Run ./start_main.sh to launch the daemon containers."
 fi
