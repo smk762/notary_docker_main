@@ -32,7 +32,7 @@ RUN PATH=/usr/local/bin/:$PATH
 RUN rm -rf /home/komodian/komodo
 RUN apt remove --purge -y $BUILD_PACKAGES $(apt-mark showauto) && \
     rm -rf /var/lib/apt/lists/* 
-RUN apt update && apt install -y wget nano htop libgomp1 libcurl3-gnutls-dev telnet
+RUN apt update && apt install -y nano htop libgomp1
 
 HEALTHCHECK --start-period=15m --interval=15m --timeout=60s CMD CMD bash /usr/local/healthcheck.sh ${SERVICE_CLI} || exit 1
 STOPSIGNAL SIGTERM
