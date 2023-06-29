@@ -21,7 +21,6 @@ services:
       - "127.0.0.1:9333:9333"
       - "127.0.0.1:9332:9332"
     volumes:
-      - <<: *zcash-params
       - /home/USERNAME/.litecoin:/home/komodian/.litecoin
     shm_size: '2gb'
     restart: always

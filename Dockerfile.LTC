@@ -22,6 +22,7 @@ COPY build_scripts/build_ltc.sh /build_ltc.sh
 RUN /build_ltc.sh "${COMMIT_HASH}"
 
 # Move binaries
+RUN cp /home/komodian/litecoin/src/litecoin-cli /home/komodian/litecoin-cli
 RUN mv /home/komodian/litecoin/src/litecoin-cli /usr/local/bin/litecoin-cli
 RUN mv /home/komodian/litecoin/src/litecoind /usr/local/bin/litecoind
 RUN PATH=/usr/local/bin/:$PATH
@@ -30,7 +31,7 @@ RUN PATH=/usr/local/bin/:$PATH
 RUN rm -rf /home/komodian/litecoin
 RUN apt remove --purge -y $BUILD_PACKAGES $(apt-mark showauto) && \
     rm -rf /var/lib/apt/lists/* 
-RUN apt update && apt install -y wget nano htop libgomp1 libcurl3-gnutls-dev telnet
+RUN apt update && apt install -y nano htop libgomp1
 
 HEALTHCHECK --start-period=15m --interval=15m --timeout=60s CMD CMD bash /usr/local/healthcheck.sh litecoin-cli || exit 1
 STOPSIGNAL SIGTERM

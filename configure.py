@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 import string
 import shutil
 import secrets
@@ -131,6 +131,8 @@ def create_launch_files():
         launch_file = f"launch_files/run_{coin}.sh"
         launch = get_launch_string(coin)
         cli = get_cli_command(coin)
+        base_cli = cli.split(' ')[0]
+        conf_path = os.path.split(get_conf_path(coin))[0]
         debug = get_debug_path(coin)
         with open(launch_file, 'w') as f:
             with open('templates/launch.template', 'r') as t:
@@ -139,6 +141,8 @@ def create_launch_files():
                     line = line.replace('COIN', coin)
                     line = line.replace('DEBUG', debug)
                     line = line.replace('LAUNCH', launch)
+                    line = line.replace('BASE_CLI', base_cli)
+                    line = line.replace('CONF_PATH', conf_path)
                     f.write(line)
             os.chmod(launch_file, 0o755)
 
@@ -157,12 +161,11 @@ def create_confs():
     for coin in coins:
         rpcuser = generate_rpc_pass()
         rpcpass = generate_rpc_pass()
-        
+        conf_file = get_conf_path(coin)
         # Get conf file path
         folder = os.path.split(conf_file)[0]
         if not os.path.exists(folder):
             os.makedirs(folder)
-        conf_file = get_conf_path(coin)
         # Use existing rpcuser and rpcpass if they exist
         if os.path.exists(conf_file):
             with open(conf_file, 'r') as f:
@@ -205,7 +208,7 @@ def create_compose_yaml():
     # Does not cover LTC, that sits in the template.
     shutil.copy('templates/docker-compose.template', 'docker-compose.yml')
     with open('docker-compose.yml', 'a+') as conf:
-        for coin in ["KMD"]:
+        for coin in ["KMD", "DOC"]:
             if coin not in ['LTC']:
                 if coin == 'KMD':
                     cli = "komodo-cli"
@@ -235,7 +238,7 @@ def create_compose_yaml():
                     conf.write(f'      - /home/USERNAME/.komodo/{coin}:/home/komodian/.komodo/{coin}\n')
                 conf.write("    shm_size: '2gb'\n")
                 conf.write('    restart: always\n')
-                conf.write('    stop_grace_period: 15s\n')
+                conf.write('    stop_grace_period: 20s\n')
                 conf.write('    logging:\n')
                 conf.write('      driver: "json-file"\n')
                 conf.write('      options:\n')
