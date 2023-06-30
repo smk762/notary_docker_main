@@ -28,8 +28,8 @@ coins_main = {
     },
     "LTC": {
         "daemon": "litecoind",
-        "p2pport": 9332,
-        "rpcport": 9333
+        "p2pport": 9333,
+        "rpcport": 9332
     },
     "CLC": {
         "daemon": "komodod",
@@ -127,6 +127,7 @@ coins_3p = {
     }    
 }
 
+# Only using 3P coins in this repo
 coins = list(coins_main.keys())
 
 
@@ -140,11 +141,118 @@ def generate_rpc_pass(length=24):
     return "".join(secrets.choice(rpc_chars) for _ in range(length))
 
 
-def get_launch_string(coin):
-    if coin == 'LTC':
-        return f"litecoind -pubkey=${{PUBKEY}}"
+def get_pubkey_address(coin: str, pubkey: str) -> str:
+    url = "https://stats.kmd.io/api/tools/address_from_pubkey/"
+    url += f"?pubkey={pubkey}"
+    try:
+        data = requests.get(url).json()["results"]
+        if "error" in data:
+            print(f"Error: {data['error']}")
+            return ""
+        for i in data:
+            if i["coin"] == coin:
+                return i["address"]
+    except Exception as e:
+        print(f"Error: {e}")
+    return ""
+
+
+def get_coin_server(coin: str) -> str:
+    if coin in coins_main:
+        return "main"
+    elif coin in coins_3p:
+        return "3p"
+    return f"no server for {coin}!"
+
+
+def get_coin_daemon(coin):
+    if coin in coins_main:
+        return coins_main[coin]["daemon"]
+    elif coin in coins_3p:
+        return coins_3p[coin]["daemon"]
+    return f"no daemon for {coin}"
+
+
+def get_data_path(coin, container=True):
+    return os.path.split(get_conf_file(coin, container))[0]
+
+
+def get_debug_file(coin, container=True) -> str:
+    path = get_data_path(coin, container)
+    if container:
+        path = path.replace(home, "/home/komodian")
+    return f"{path}/debug.log"
+
+
+def get_conf_file(coin, container=True):
+    if container:
+        data_dir = ".komodo"
+    else:
+        data_dir = ".komodo_3p"
+    if coin == 'AYA':
+        conf_file = f"{home}/.aryacoin/aryacoin.conf"
+    elif coin == 'CHIPS':
+        conf_file = f"{home}/.chips/chips.conf"
+    elif coin == 'EMC2':
+        conf_file = f"{home}/.einsteinium/einsteinium.conf"
+    elif coin == 'KMD':
+        conf_file = f"{home}/.komodo/komodo.conf"
+    elif coin == 'LTC':
+        conf_file = f"{home}/.litecoin/litecoin.conf"
+    elif coin == 'MIL':
+        conf_file = f"{home}/.mil/mil.conf"
+    elif coin == 'KMD_3P':
+        conf_file = f"{home}/{data_dir}/komodo.conf"
+    elif coin == 'MCL':
+        conf_file = f"{home}/{data_dir}/MCL/MCL.conf"
+    elif coin == 'TOKEL':
+        conf_file = f"{home}/{data_dir}/TOKEL/TOKEL.conf"
+    elif coin == 'VRSC':
+        conf_file = f"{home}/{data_dir}/VRSC/VRSC.conf"
+    else:
+        conf_file = f"{home}/.komodo/{coin}/{coin}.conf"
+    return conf_file
+
+
+def get_cli_command(coin, container=True) -> str:
+    if coin == 'AYA':
+        return f"aryacoin-cli"
+    if coin == 'CHIPS':
+        return f"chips-cli"
+    if coin == 'EMC2':
+        return f"einsteinium-cli"
     if coin == 'KMD':
-        return f'komodod -pubkey=${{PUBKEY}} -gen -genproclimit=1 -minrelaytxfee=0.000035 -opretmintxfee=0.004 -notary=".litecoin/litecoin.conf"'
+        return f"komodo-cli"
+    if coin == 'KMD_3P':
+        if not container:
+            return f"komodo_3p-cli"
+        else:
+            return f"komodo-cli"
+    if coin == 'LTC':
+        return f"litecoin-cli"
+    if coin == 'MCL':
+        if not container:
+            return f"mcl-cli"
+        else:
+            return f"mcl-cli -ac_name=MCL"
+    if coin == 'MIL':
+        return f"mil-cli"
+    if coin == 'TOKEL':
+        return f"tokel-cli"
+    if coin == 'VRSC':
+        return f"verus-cli"
+    return f"komodo-cli -ac_name={coin}"
+  
+
+def get_launch_params(coin):
+    launch = get_coin_daemon(coin)
+    if coin == 'KMD':
+        launch += " -gen -genproclimit=1 -minrelaytxfee=0.000035 -opretmintxfee=0.004 -notary=.litecoin/litecoin.conf"
+    elif coin == 'KMD_3P':
+        launch += " -minrelaytxfee=0.000035 -opretmintxfee=0.004 -notary"
+    elif coin == 'MCL':
+        launch += " -ac_name=MCL -ac_supply=2000000 -ac_cc=2 -addnode=5.189.149.242 -addnode=161.97.146.150 -addnode=149.202.158.145 -addressindex=1 -spentindex=1 -ac_marmara=1 -ac_staked=75 -ac_reward=3000000000 -daemon"
+
     for i in assetchains:
         if i["ac_name"] == coin:
             params = []
@@ -155,44 +263,54 @@ def get_launch_string(coin):
                 else:
                     params.append(format_param(param, value))
             launch_str = ' '.join(params)
-            return f"komodod {launch_str} -pubkey=${{PUBKEY}}"
+            launch += f" {launch_str}"
+    server = get_coin_server(coin)
+    pubkey = get_user_pubkey(server)
+    launch += f" -pubkey={pubkey}"
+    return launch
 
 
-def get_cli_command(coin) -> str:
-    if coin == 'LTC':
-        return f"litecoin-cli"
-    elif coin == 'KMD':
-        return f"komodo-cli"
+def get_user_pubkey(server='3p'):
+    if server == '3p':
+        file = "pubkey_3p.txt"
     else:
-        return f"komodo-cli -ac_name={coin}"
-
-
-def get_debug_path(coin) -> str:
-    if coin == 'LTC':
-        return f"{home}/.litecoin/debug.log"
-    elif coin == 'KMD':
-        return f"{home}/.komodo/debug.log"
-    else:
-        return f"{home}/.komodo/{coin}/debug.log"
+        file = "pubkey.txt"
+    if os.path.exists(file):
+        with open(file, 'r') as f:
+            for line in f:
+                if line.startswith("pubkey="):
+                    return line.split("=")[1].strip()
+    print(f"No {file} found! Lets create it now...")
+    pubkey = input(f"Enter your {server} pubkey: ")
+    with open(file, 'w') as f:
+        f.write(f"pubkey={pubkey}")
+    return pubkey
 
 
 def create_cli_wrappers():
     for coin in coins:
-        with open(f"{home}/.komodo/{coin}-cli", 'w') as conf:
-            if coin != 'KMD':
-                conf.write('#!/bin/bash\n')
-                conf.write(f"komodo-cli -ac_name={coin} $@\n")
-                os.chmod(f"{home}/.komodo/{coin}-cli", 0o755)
+        cli = get_cli_command(coin, False)
+        if "ac_name" in cli:
+            wrapper = f"cli_wrappers/{coin.lower()}-cli"
+        else:
+            wrapper = f"cli_wrappers/{cli}"
+        with open(wrapper, 'w') as conf:
+            # docker exec -it notary_docker_3p-vrsc-1 verus-cli  getinfo
+            conf.write('#!/bin/bash\n')
+            conf.write(f'docker exec -it {coin.lower()} {get_cli_command(coin, True)} "$@"\n')
+            # conf.write(f'komodo-cli -conf={get_conf_file(coin, False)} "$@"\n')
+            os.chmod(wrapper, 0o755)
 
 
 def create_launch_files():
     for coin in coins:
+        launch = get_launch_params(coin)
         launch_file = f"docker_files/launch_files/run_{coin}.sh"
-        launch = get_launch_string(coin)
+        # This is messy, but it works. Will make it cleaner later
+        # inside container, komodo-cli is just komodo-cli
+        coin = coin.split('_')[0]
+        debug = get_debug_file(coin)
         cli = get_cli_command(coin)
-        base_cli = cli.split(' ')[0]
-        conf_path = os.path.split(get_conf_path(coin))[0]
-        debug = get_debug_path(coin)
         with open(launch_file, 'w') as f:
             with open('templates/launch.template', 'r') as t:
                 for line in t.readlines():
@@ -200,31 +318,28 @@ def create_launch_files():
                     line = line.replace('COIN', coin)
                     line = line.replace('DEBUG', debug)
                     line = line.replace('LAUNCH', launch)
-                    line = line.replace('BASE_CLI', base_cli)
-                    line = line.replace('CONF_PATH', conf_path)
                     f.write(line)
             os.chmod(launch_file, 0o755)
 
 
-def get_conf_path(coin):
-    if coin == 'LTC':
-        conf_file = f"{home}/.litecoin/litecoin.conf"
-    elif coin == 'KMD':
-        conf_file = f"{home}/.komodo/komodo.conf"
+def create_confs(server="3p", coins_list=None):
+    if server == "3p":
+        data = coins_3p
+        rpcip = "0.0.0.0"
     else:
-        conf_file = f"{home}/.komodo/{coin}/{coin}.conf"
-    return conf_file
-
-
-def create_confs():
+        data = coins_main
+        rpcip = "0.0.0.0"
+    if coins_list:
+        coins = coins_list
+    else:
+        coins = list(data.keys())
     for coin in coins:
         rpcuser = generate_rpc_pass()
         rpcpass = generate_rpc_pass()
-        conf_file = get_conf_path(coin)
-        # Get conf file path
-        folder = os.path.split(conf_file)[0]
-        if not os.path.exists(folder):
-            os.makedirs(folder)
+        conf_file = get_conf_file(coin, False)
+        data_path = get_data_path(coin, False)
+        if not os.path.exists(data_path):
+            os.makedirs(data_path)
         # Use existing rpcuser and rpcpass if they exist
         if os.path.exists(conf_file):
             with open(conf_file, 'r') as f:
@@ -245,24 +360,37 @@ def create_confs():
             conf.write('server=1\n')
             conf.write('daemon=1\n')
             conf.write('rpcworkqueue=256\n')
-            conf.write(f'rpcbind=0.0.0.0:{coins_main[coin]["rpcport"]}\n')
-            conf.write('rpcallowip=0.0.0.0/0\n')
-            conf.write(f'port={coins_main[coin]["p2pport"]}\n')
-            conf.write(f'rpcport={coins_main[coin]["rpcport"]}\n')
+            conf.write(f'rpcbind={rpcip}:{data[coin]["rpcport"]}\n')
+            conf.write(f'rpcallowip={rpcip}/0\n')
+            conf.write(f'port={data[coin]["p2pport"]}\n')
+            conf.write(f'rpcport={data[coin]["rpcport"]}\n')
             conf.write('addnode=77.75.121.138 # Dragonhound_AR\n')
             conf.write('addnode=209.222.101.247 # Dragonhound_NA\n')
             conf.write('addnode=103.195.100.32 # Dragonhound_DEV\n')
-            conf.write('addnode=104.238.221.61\n')
-            conf.write('addnode=199.127.60.142\n')
+            conf.write('addnode=178.159.2.9 # Dragonhound_EU\n')
+            conf.write('addnode=148.113.1.52 # gcharang_AR\n')
+            conf.write('addnode=51.161.209.100 # gcharang_SH\n')
+            conf.write('addnode=148.113.8.6 # gcharang_DEV\n')
+            conf.write('addnode=144.76.80.75 # Alright_DEV\n')
+            conf.write('addnode=65.21.77.109 # Alright_EU\n')
+            conf.write('addnode=89.19.26.211 # Marmara1\n')
+            conf.write('addnode=89.19.26.212 # Marmara2\n')
+            if coin in ["MCL", "VRSC", "TOKEL", "KMD_3P"] or (coin in coins_main and coin != "LTC"):
+                conf.write('whitelistaddress=RDragoNHdwovvsDLSLMiAEzEArAD3kq6FN # s6_dragonhound_DEV_main\n')
+                conf.write('whitelistaddress=RLdmqsXEor84FC8wqDAZbkmJLpgf2nUSkq # s6_dragonhound_DEV_3p\n')
+                conf.write('whitelistaddress=RHi882Amab35uXjqBZjVxgEgmkkMu454KK # s7_dragonhound_DEV_main\n')
+                conf.write('whitelistaddress=RHound8PpyhVLfi56dC7MK3ZvvkAmB3bvQ # s7_dragonhound_DEV_3p\n')
+                # Adds user main & 3p addresses for this node to whitelist
+                for server in ["3p", "main"]:
+                    address = get_pubkey_address("KMD", get_user_pubkey(server))
+                    if address != "":
+                        conf.write(f'whitelistaddress={address} # User {server} KMD address\n')
+                print(f"PLEASE MANUALLY ADD ANY ADDITIONAL WHITELIST ADDRESSES TO {conf_file}!")
         # create debug.log files if not existing
-        debug_file = get_debug_path(coin)
-        debug_path = os.path.split(debug_file)[0]
-        if not os.path.exists(debug_path):
-            os.makedirs(debug_path)
+        debug_file = get_debug_file(coin, False)
         if not os.path.exists(debug_file):
             with open(debug_file, 'w') as f:
                 f.write('')
-
 
 
 def create_compose_yaml(server='3p'):
@@ -273,8 +401,6 @@ def create_compose_yaml(server='3p'):
         shutil.copy('templates/docker-compose.template_main', 'docker-compose.yml')
         with open('docker-compose.yml', 'a+') as conf:
             for coin in coins_main:
-                if coin == 'LTC':
-                    continue
                 if coin == 'KMD':
                     cli = "komodo-cli"
                 else:
@@ -293,7 +419,7 @@ def create_compose_yaml(server='3p'):
                 conf.write('        - COMMIT_HASH=156dba6\n')
                 conf.write(f'        - SERVICE_CLI="{cli}"\n')
                 conf.write('    ports:\n')
-                conf.write(f'      - "{p2pport}:{p2pport}"\n')
+                conf.write(f'      - "127.0.0.1:{p2pport}:{p2pport}"\n')
                 conf.write(f'      - "127.0.0.1:{rpcport}:{rpcport}"\n')
                 conf.write('    volumes:\n')
                 conf.write('      - <<: *zcash-params\n')      
@@ -310,9 +436,8 @@ def create_compose_yaml(server='3p'):
                 conf.write('      options:\n')
                 conf.write('        max-size: "20m"\n')
                 conf.write('        max-file: "10"\n')
-                conf.write(f'    command: ["/run_{coin}.sh"]\n')
+                conf.write(f'    command: ["/run.sh"]\n')
                 conf.write('\n')
-
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -320,10 +445,11 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'clis':
         create_cli_wrappers()
     elif sys.argv[1] == 'confs':
+        # Temporary to fix earlier misconfiguration
         create_confs()
     elif sys.argv[1] == 'launch':
         create_launch_files()
     elif sys.argv[1] == 'yaml':
-        create_compose_yaml('main')
+        create_compose_yaml()
     else:
-        print('Invalid option, must be in ["clis", "confs", "launch"]')
+        print('Invalid option, must be in ["clis", "confs", "launch", "yaml]')
