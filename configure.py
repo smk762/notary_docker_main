@@ -127,9 +127,11 @@ coins_3p = {
     }    
 }
 
-# Only using 3P coins in this repo
-coins = list(coins_main.keys())
-
+def get_coins(server='3p'):
+    if SERVER == 'main':
+        return list(coins_main.keys())
+    return list(coins_3p.keys())
+    
 
 def format_param(param, value):
     return f'-{param}={value}'
@@ -401,6 +403,8 @@ def create_compose_yaml(server='3p'):
         shutil.copy('templates/docker-compose.template_main', 'docker-compose.yml')
         with open('docker-compose.yml', 'a+') as conf:
             for coin in coins_main:
+                if coin == 'LTC':
+                    continue
                 if coin == 'KMD':
                     cli = "komodo-cli"
                 else:
@@ -440,16 +444,20 @@ def create_compose_yaml(server='3p'):
                 conf.write('\n')
 
 if __name__ == '__main__':
+    
+    SERVER = "main"
+    coins = get_coins(SERVER)
+
     if len(sys.argv) < 2:
         print('No arguments given, exiting.')
     elif sys.argv[1] == 'clis':
         create_cli_wrappers()
     elif sys.argv[1] == 'confs':
         # Temporary to fix earlier misconfiguration
-        create_confs()
+        create_confs(SERVER)
     elif sys.argv[1] == 'launch':
         create_launch_files()
     elif sys.argv[1] == 'yaml':
-        create_compose_yaml()
+        create_compose_yaml(SERVER)
     else:
         print('Invalid option, must be in ["clis", "confs", "launch", "yaml]')
