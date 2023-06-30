@@ -11,15 +11,15 @@ services:
     env_file:
       - .env
     build:
-      context: .
+      context: ./docker_files
       dockerfile: Dockerfile.LTC
       args:
         - USER_ID=$USER_ID
         - GROUP_ID=$GROUP_ID
         - COMMIT_HASH=0.16
     ports:
+      - "9332:9332"
       - "127.0.0.1:9333:9333"
-      - "127.0.0.1:9332:9332"
     volumes:
       - /home/USERNAME/.litecoin:/home/komodian/.litecoin
     shm_size: '2gb'
@@ -31,7 +31,4 @@ services:
         max-size: "20m"
         max-file: "10"
     command: ["/run_LTC.sh"]
-
-
-
 

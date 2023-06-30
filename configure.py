@@ -28,8 +28,8 @@ coins_main = {
     },
     "LTC": {
         "daemon": "litecoind",
-        "p2pport": 9333,
-        "rpcport": 9332
+        "p2pport": 9332,
+        "rpcport": 9333
     },
     "CLC": {
         "daemon": "komodod",
@@ -292,7 +292,7 @@ def create_compose_yaml(server='3p'):
                 conf.write('        - COMMIT_HASH=156dba6\n')
                 conf.write(f'        - SERVICE_CLI="{cli}"\n')
                 conf.write('    ports:\n')
-                conf.write(f'      - "127.0.0.1:{p2pport}:{p2pport}"\n')
+                conf.write(f'      - "{p2pport}:{p2pport}"\n')
                 conf.write(f'      - "127.0.0.1:{rpcport}:{rpcport}"\n')
                 conf.write('    volumes:\n')
                 conf.write('      - <<: *zcash-params\n')      
