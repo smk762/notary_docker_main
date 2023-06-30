@@ -19,7 +19,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install $BUILD_PACKAGES -y
 
 # Build 
-COPY build_scripts/build.sh /build.sh
+COPY build_scripts/build_kmd.sh /build.sh
 RUN /build.sh "${COMMIT_HASH}"
 
 # Move binaries

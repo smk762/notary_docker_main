@@ -32,10 +32,10 @@ sudo systemctl restart docker
 ## Setup
 
 1. Clone this repository: `git clone https://github.com/smk762/notary_docker_main`
-2. Run `./setup_main.sh` to create the `.env` and `docker-compose.yml` files and build the daemon containers
-3. Run `./start_main.sh` to launch all the deamons within the docker containers, and tail their logs
-4. Run `./iguana_main.sh` to launch Iguana for the 3P daemons within the docker containers
-5. Run `./stop_main.sh` to stop all the deamons
+2. Run `./setup` to create the `.env` and `docker-compose.yml` files and build the daemon containers
+3. Run `./start` to launch all the deamons within the docker containers, and tail their logs
+4. Run `./iguana` to launch Iguana for the 3P daemons within the docker containers
+5. Run `./stop` to stop all the deamons
 
 As we will be running multiple instances of the KMD daemon on the server, we will be using a non-standard data folder and ports for the 3P KMD daemon. This is to avoid conflicts with the native KMD daemon running on the host machine for the "main" coins.
 There may also some other minor differences with paths and ports used for daemons within the docker containers, so a [modified `m_notary_main`](https://github.com/KomodoPlatform/dPoW/blob/season-seven/iguana/m_notary_main_docker) file is used to launch Iguana.
@@ -43,16 +43,16 @@ There may also some other minor differences with paths and ports used for daemon
 ---
 ### Some other commands that may come in handy later:
 - Run `./add_peers.sh` to help add connections when doing initial sync.
-- Run `./start_main.sh <ticker>` to launch a specific deamon within a docker container, and tail it's logs
-- Run `./stop_main.sh <ticker>` to stop a specific deamon
-- Run `./logs_main.sh <ticker>` to follow the logs for a specific deamon
+- Run `./start <ticker>` to launch a specific deamon within a docker container, and tail it's logs
+- Run `./stop <ticker>` to stop a specific deamon
+- Run `./logs <ticker>` to follow the logs for a specific deamon
 ---
 
 ### Updating daemon versions
 
 When there is an update to any daemon repository, we need to update our `docker-compose.yml` file with the updated `COMMIT_HASH` for deamons which need to be rebuilt.
-- Run `./update_main.sh` to stop all daemons, update this repo, regenerate the `docker-compose.yml` file, rebuild the docker images, and then restart all daemons.
-- Run `./update_main.sh <ticker>` to stop a specific daemon, rebuild its docker image, and then restart the daemon.
+- Run `./update` to stop all daemons, update this repo, regenerate the `docker-compose.yml` file, rebuild the docker images, and then restart all daemons.
+- Run `./update <ticker>` to stop a specific daemon, rebuild its docker image, and then restart the daemon.
 - To clear old docker cache, use `docker system prune -a --volumes`. This will mean everything must be rebuilt, but the data folders will remain intact on the host machine.
 - To force a rebuild of a specific docker image, use `docker compose build <service> --no-cache`
 

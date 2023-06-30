@@ -187,7 +187,7 @@ def create_cli_wrappers():
 
 def create_launch_files():
     for coin in coins:
-        launch_file = f"launch_files/run_{coin}.sh"
+        launch_file = f"docker_files/launch_files/run_{coin}.sh"
         launch = get_launch_string(coin)
         cli = get_cli_command(coin)
         base_cli = cli.split(' ')[0]
@@ -272,6 +272,8 @@ def create_compose_yaml(server='3p'):
         shutil.copy('templates/docker-compose.template_main', 'docker-compose.yml')
         with open('docker-compose.yml', 'a+') as conf:
             for coin in coins_main:
+                if coin == 'LTC':
+                    continue
                 if coin == 'KMD':
                     cli = "komodo-cli"
                 else:
@@ -321,6 +323,6 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'launch':
         create_launch_files()
     elif sys.argv[1] == 'yaml':
-        create_compose_yaml()
+        create_compose_yaml('main')
     else:
         print('Invalid option, must be in ["clis", "confs", "launch"]')
