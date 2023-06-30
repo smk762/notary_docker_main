@@ -3,6 +3,7 @@ version: '3.7'
 x-zcash-params-volume:
   &zcash-params
   type: bind
+  read_only: true
   source: /home/USERNAME/.zcash-params
   target: /home/komodian/.zcash-params
 
@@ -11,27 +12,26 @@ services:
     env_file:
       - .env
     build:
-      context: .
+      context: ./docker_files
       dockerfile: Dockerfile.LTC
       args:
         - USER_ID=$USER_ID
         - GROUP_ID=$GROUP_ID
         - COMMIT_HASH=0.16
+        - SERVICE_CLI="litecoin-cli"
     ports:
-      - "127.0.0.1:9333:9333"
+      - "9333:9333"
       - "127.0.0.1:9332:9332"
     volumes:
       - /home/USERNAME/.litecoin:/home/komodian/.litecoin
+    container_name: ltc
     shm_size: '2gb'
     restart: always
-    stop_grace_period: 15s
+    stop_grace_period: 10s
     logging:
       driver: "json-file"
       options:
         max-size: "20m"
         max-file: "10"
-    command: ["/run_LTC.sh"]
-
-
-
+    command: ["/run.sh"]
 

@@ -19,25 +19,25 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install $BUILD_PACKAGES -y
 
 # Build 
-COPY build_scripts/build.sh /build.sh
-RUN /build.sh "${COMMIT_HASH}"
+COPY build_scripts/build_ltc.sh /build_ltc.sh
+RUN /build_ltc.sh "${COMMIT_HASH}"
 
 # Move binaries
-RUN cp /home/komodian/komodo/src/komodo-cli /home/komodian/komodo-cli
-RUN cp /home/komodian/komodo/src/komodo-cli /usr/local/bin/komodo-cli 
-RUN cp /home/komodian/komodo/src/komodod /usr/local/bin/komodod
+RUN mv /home/komodian/litecoin/src/litecoin-cli /usr/local/bin/litecoin-cli
+RUN mv /home/komodian/litecoin/src/litecoind /usr/local/bin/litecoind
 RUN PATH=/usr/local/bin/:$PATH
 
 # Cleanup
-RUN rm -rf /home/komodian/komodo
+RUN rm -rf /home/komodian/litecoin
 RUN apt remove --purge -y $BUILD_PACKAGES $(apt-mark showauto) && \
     rm -rf /var/lib/apt/lists/* 
 RUN apt update && apt install -y nano htop libgomp1
 
-HEALTHCHECK --start-period=15m --interval=15m --timeout=60s CMD CMD bash /usr/local/healthcheck.sh ${SERVICE_CLI} || exit 1
+# Healthcheck
+COPY healthcheck.sh /usr/local/bin
+HEALTHCHECK --start-period=15m --interval=15m --timeout=60s CMD CMD bash /usr/local/healthcheck.sh "${SERVICE_CLI}" || exit 1
 STOPSIGNAL SIGTERM
 
-COPY healthcheck.sh /usr/local/bin
 COPY entrypoint.sh /entrypoint.sh
 COPY launch_files/ /
 

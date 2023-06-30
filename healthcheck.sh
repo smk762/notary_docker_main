@@ -2,7 +2,7 @@
 set -eo pipefail
 
 ## Set the cli binary
-cli = $1
+cli = "$1"
 
 ## Get the number of node connections
 conn=$(${cli} getconnectioncount)
