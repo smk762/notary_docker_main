@@ -377,7 +377,7 @@ def create_confs(server="3p", coins_list=None):
             conf.write('addnode=65.21.77.109 # Alright_EU\n')
             conf.write('addnode=89.19.26.211 # Marmara1\n')
             conf.write('addnode=89.19.26.212 # Marmara2\n')
-            if coin in ["MCL", "VRSC", "TOKEL", "KMD_3P"] or (coin in coins_main and coin != "LTC"):
+            if coin in ["MCL", "VRSC", "TOKEL", "KMD_3P"] or (coin in coins_main and coin not in ["LTC", "PIRATE"]):
                 conf.write('whitelistaddress=RDragoNHdwovvsDLSLMiAEzEArAD3kq6FN # s6_dragonhound_DEV_main\n')
                 conf.write('whitelistaddress=RLdmqsXEor84FC8wqDAZbkmJLpgf2nUSkq # s6_dragonhound_DEV_3p\n')
                 conf.write('whitelistaddress=RHi882Amab35uXjqBZjVxgEgmkkMu454KK # s7_dragonhound_DEV_main\n')
