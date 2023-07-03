@@ -149,6 +149,8 @@ def create_cli_wrappers() -> None:
 def create_launch_files() -> None:
     for coin in DOCKER_COINS:
         create_launch_file(coin)
+    if "KMD" not in DOCKER_COINS:
+        create_launch_file("KMD")
 
 
 def create_confs() -> None:
