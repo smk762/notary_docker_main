@@ -1,0 +1,4 @@
+[submodule "komodo-install-explorer"]
+	path = komodo-install-explorer
+	url = https://github.com/smk762/komodo-install-explorer
+	branch = dockerised-notary-chains

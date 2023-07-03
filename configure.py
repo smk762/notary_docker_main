@@ -35,7 +35,7 @@ def create_launch_file(coin: str) -> None:
         os.chmod(launch_file, 0o755)
 
 
-def create_conf(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=1) -> None:
+def create_conf(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=1, timestampindex=0) -> None:
     '''
     Creates a TICKER.conf file on the host. `addressindex=1` is incompatible 
     with the DexStats bootstraps. If you want to use the bootstrap, without a reindex,
@@ -45,6 +45,7 @@ def create_conf(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=
         txindex = 1
         addressindex = 1
         spentindex = 1
+        timestampindex = 1
 
     # Create conf file if not existing
     data_path = helper.get_data_path(coin, False)
@@ -62,9 +63,10 @@ def create_conf(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=
     conf_file = helper.get_conf(coin, False)
     rpcuser, rpcpass = helper.get_rpc_creds(conf_file)
     pubkey = helper.get_pubkey(coin)
-    rpcport = COINS_DATA[coin]["rpcport"]
     p2pport = COINS_DATA[coin]["p2pport"]
-
+    rpcport = COINS_DATA[coin]["rpcport"] or p2pport + 1
+    zmqport = COINS_DATA[coin]["zmqport"] or p2pport + 2
+    zmq_url = f"tcp://{rpcip}:{zmqport}"
     with open(conf_file, 'w') as conf:
         # Auth creds for RPC
         conf.write(f'rpcuser={rpcuser}\n')
@@ -76,7 +78,13 @@ def create_conf(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=
         # Maintain an index of all transactions.
         conf.write(f'txindex={txindex}\n')
         # Maintain an index of timestamps for all block hashes.
-        conf.write(f'timestampindex={txindex}\n')        
+        conf.write(f'timestampindex={timestampindex}\n')
+        if IS_INSIGHT_EXPLORER:
+            conf.write(f'zmqpubrawtx={zmq_url}\n')
+            conf.write(f'zmqpubhashblock={zmq_url}\n')
+            conf.write(f'uacomment=bitcore\n')
+            conf.write(f'showmetrics=0\n')
+
         # Required for JSON RPC commands
         conf.write('server=1\n')
         # Run in the background as a daemon and accept commands
