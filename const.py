@@ -13,15 +13,8 @@ LAUNCH_PARAMS = json.load(open(os.path.join(SCRIPT_PATH, "smartchains.json")))
 # Any additional metadata about a coin (e.g. which dPoW server) can be added in coins_data.json
 COINS_DATA = json.load(open(os.path.join(SCRIPT_PATH, "coins_data.json")))
 
-# To include all coins in COINS_DATA, uncomment this line:
-#DOCKER_COINS = list(COINS_DATA.keys())
-
 # Alternatively, you can specify a list of coins to build / launch here
-DOCKER_COINS = ["DOC", "MARTY"]
-
-# To exclude certain coins from DOCKER_COINS,add them here:
-EXCLUDE_COINS = ["KMD", "KMD_3P"]
-DOCKER_COINS = list(set(DOCKER_COINS) - set(EXCLUDE_COINS))
+DOCKER_COINS = json.load(open(os.path.join(SCRIPT_PATH, "docker_coins.json")))
 
 IS_NOTARY = False
 IS_INSIGHT_EXPLORER = True
