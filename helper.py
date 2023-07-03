@@ -18,9 +18,9 @@ def get_commit_hash(coin):
 def get_dockerfile(coin):
     dockerfiles = [i for i in os.listdir("docker_files") if i.startswith("Dockerfile")]
     if f"Dockerfile.{coin}" in dockerfiles:
-        return f"docker_files/Dockerfile.{coin}"
+        return f"Dockerfile.{coin}"
     else:
-        return f"docker_files/Dockerfile.KMD"
+        return f"Dockerfile.KMD"
 
 def generate_rpc_pass(length: int=24) -> str:
     '''Generates a random string for the rpcuser and rpcpass'''
