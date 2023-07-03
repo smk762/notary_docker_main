@@ -2,22 +2,22 @@
 
 script_path=$(dirname $(realpath $0))
 
+# Clear old files
+echo "Clearing old files..."
+rm -rf ${script_path}/cli_wrappers/*-cli
+rm -rf ${script_path}/docker_files/launch_files/*.sh
+rm -rf ${script_path}/cli_wrappers/*
+
 # Temp to unset docker_host_ip var
 echo "Setting up .env file..."
 USER_ID=$(id -u)
 GROUP_ID=$(id -g)
-echo "PUBKEY=${pubkey_main}" > .env
-echo "PUBKEY_3P=${pubkey_3p}" >> .env
 echo "USER_ID=${USER_ID}" >> .env
 echo "GROUP_ID=${GROUP_ID}" >> .env
 
 # Update repo
 echo "Updating repository..."
 git pull || sleep 5
-
-# Update assetchains.json
-rm assetchains.json
-wget https://raw.githubusercontent.com/KomodoPlatform/dPoW/master/iguana/assetchains.json
 
 # Creating launch files
 echo "Setting up launch files..."
@@ -49,12 +49,11 @@ else
     ./stop $1
 fi
 
-sudo ln -sf ${script_path}/cli_wrappers/komodo-cli /usr/local/bin/komodo-cli
-sudo ln -sf ${script_path}/cli_wrappers/litecoin-cli /usr/local/bin/litecoin-cli
-
-./listassetchains | while read coin; do
-    coin=$(echo $coin | awk '{print tolower($0)}')
-    sudo ln -sf ${script_path}/cli_wrappers/${coin}-cli /usr/local/bin/${coin}-cli
+for file in ${script_path}/cli_wrappers/*-cli; do
+    f=$(basename ${file})
+    sudo ln -sf ${script_path}/cli_wrappers/${f} /usr/local/bin/${f}
 done
+
+
 
 echo "Done! Use ./start to launch your daemons..."

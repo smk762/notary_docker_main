@@ -1,0 +1,359 @@
+{
+    "CCL": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=CCL",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 20848,
+        "rpcport": 20849,
+        "conf": ".komodo/CCL/CCL.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "KMD": {
+        "daemon": "komodod",
+        "cli": "komodo-cli",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 7770,
+        "rpcport": 7771,
+        "conf": ".komodo/komodo.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "KMD_3P": {
+        "daemon": "komodod",
+        "cli": "komodo-cli",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 8770,
+        "rpcport": 8771,
+        "conf": ".komodo/komodo.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "CLC": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=CLC",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 20931,
+        "rpcport": 20932,
+        "conf": ".komodo/CLC/CLC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "GLEEC": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=GLEEC",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 23225,
+        "rpcport": 23226,
+        "conf": ".komodo/THC/THC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "ILN": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=ILN",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 12985,
+        "rpcport": 12986,
+        "conf": ".komodo/THC/THC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "NINJA": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=NINJA",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 8426,
+        "rpcport": 8427,
+        "conf": ".komodo/THC/THC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "KOIN": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=KOIN",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 10701,
+        "rpcport": 10702,
+        "conf": ".komodo/THC/THC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "PIRATE": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=PIRATE",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 45452,
+        "rpcport": 45453,
+        "conf": ".komodo/THC/THC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "SUPERNET": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=SUPERNET",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 11340,
+        "rpcport": 11341,
+        "conf": ".komodo/THC/THC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "THC": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=THC",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 36789,
+        "rpcport": 36790,
+        "conf": ".komodo/THC/THC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "DOC": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=DOC",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 62415,
+        "rpcport": 62416,
+        "conf": ".komodo/DOC/DOC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "MARTY": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=MARTY",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 52592,
+        "rpcport": 52593,
+        "conf": ".komodo/MARTY/MARTY.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "CHIPS": {
+        "daemon": "chipsd",
+        "cli": "chips-cli",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 57776,
+        "rpcport": 57777,
+        "conf": ".chips/chips.conf",
+        "dpow": {
+            "server": "3p",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "MCL": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=MCL",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 33824,
+        "rpcport": 33825,
+        "conf": ".komodo_3p/MCL/MCL.conf",
+        "dpow": {
+            "server": "3p",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "TOKEL": {
+        "daemon": "tokeld",
+        "cli": "tokel-cli",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 29404,
+        "rpcport": 29405,
+        "conf": ".komodo_3p/TOKEL/TOKEL.conf",
+        "dpow": {
+            "server": "3p",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "VRSC": {
+        "daemon": "verusd",
+        "cli": "verus",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 60, "wiftype": 188, "p2shtype": 85},
+        "p2pport": 27485,
+        "rpcport": 27486,
+        "conf": ".komodo_3p/VRSC/VRSC.conf",
+        "dpow": {
+            "server": "3p",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "LTC": {
+        "daemon": "litecoind",
+        "cli": "litecoin-cli",
+        "is_smartchain": false,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 48, "wiftype": 5, "p2shtype": 176},
+        "p2pport": 9333,
+        "rpcport": 9332,
+        "conf": ".litecoin/litecoin.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        }
+    },
+    "AYA": {
+        "daemon": "aryacoind",
+        "cli": "aryacoin-cli",
+        "is_smartchain": false,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 23, "wiftype": 176, "p2shtype": 5},
+        "p2pport": 26001,
+        "rpcport": 26002,
+        "conf": ".aryacoin/aryacoin.conf",
+        "dpow": {
+            "server": "3p",
+            "utxo_value": 0.001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 100000
+        }
+    },
+    "EMC2": {
+        "daemon": "einsteiniumd",
+        "cli": "einsteinium-cli",
+        "is_smartchain": false,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 33, "wiftype": 176, "p2shtype": 5},
+        "p2pport": 41878,
+        "rpcport": 41879,
+        "conf": ".einsteinium/einsteinium.conf",
+        "dpow": {
+            "server": "3p",
+            "utxo_value": 0.001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 100000
+        }
+    },
+    "MIL": {
+        "daemon": "mild",
+        "cli": "mil-cli",
+        "is_smartchain": false,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {"pubtype": 50, "wiftype": 239, "p2shtype": 196},
+        "p2pport": 41888,
+        "rpcport": 41889,
+        "conf": ".mil/mil.conf",
+        "dpow": {
+            "server": "3p",
+            "utxo_value": 0.001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 100000
+        }
+    }
+}

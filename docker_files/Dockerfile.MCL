@@ -5,9 +5,11 @@ LABEL maintainer="smk@komodoplatform.com"
 ARG COMMIT_HASH
 ARG GROUP_ID
 ARG USER_ID
+ARG SERVICE_CLI
 RUN addgroup --gid ${GROUP_ID} notarygroup
 RUN adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} komodian
 WORKDIR /home/komodian
+RUN apt-get update -y
 
 ARG BUILD_PACKAGES="libevent-dev libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev curl \
         libboost-test-dev libboost-thread-dev build-essential pkg-config libc6-dev m4 g++-multilib autoconf libtool ncurses-dev python3-zmq \
@@ -17,30 +19,34 @@ ARG BUILD_PACKAGES="libevent-dev libboost-system-dev libboost-filesystem-dev lib
 ARG DEBIAN_FRONTEND=noninteractive 
 RUN apt update && apt install $BUILD_PACKAGES -y
 
-# Build 
-COPY build_scripts/build_ltc.sh /build_ltc.sh
-RUN /build_ltc.sh "${COMMIT_HASH}"
+# Build
+COPY build_files/build_MCL.sh /build.sh
+RUN /build.sh "${COMMIT_HASH}"
 
 # Move binaries
-RUN cp /home/komodian/litecoin/src/litecoin-cli /home/komodian/litecoin-cli
-RUN mv /home/komodian/litecoin/src/litecoin-cli /usr/local/bin/litecoin-cli
-RUN mv /home/komodian/litecoin/src/litecoind /usr/local/bin/litecoind
+RUN mv /home/komodian/marmara/src/komodo-cli /usr/local/bin/mcl-cli
+RUN mv /home/komodian/marmara/src/komodod /usr/local/bin/komodod
 RUN PATH=/usr/local/bin/:$PATH
 
 # Cleanup
-RUN rm -rf /home/komodian/litecoin
+RUN rm -rf /home/komodian/marmara
 RUN apt remove --purge -y $BUILD_PACKAGES $(apt-mark showauto) && \
     rm -rf /var/lib/apt/lists/* 
 RUN apt update && apt install -y nano htop libgomp1
 
-HEALTHCHECK --start-period=15m --interval=15m --timeout=60s CMD CMD bash /usr/local/healthcheck.sh litecoin-cli || exit 1
+# Healthcheck
+COPY healthcheck.sh /usr/local/bin
+HEALTHCHECK --start-period=15m --interval=15m --timeout=60s CMD CMD bash /usr/local/bin/healthcheck.sh "${SERVICE_CLI}" || exit 1
 STOPSIGNAL SIGTERM
 
 COPY entrypoint.sh /entrypoint.sh
-COPY launch_files/run_LTC.sh /run.sh
+COPY launch_files/run_MCL.sh /run.sh
 
 # Setup user and working directory
 RUN chown -R komodian:notarygroup /home/komodian
 USER komodian
 
 ENTRYPOINT ["/entrypoint.sh"]
+
+# Start daemon with the data directory mounted
+

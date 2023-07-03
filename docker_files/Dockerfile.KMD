@@ -18,7 +18,7 @@ STOPSIGNAL SIGTERM
 
 COPY healthcheck.sh /usr/local/bin
 COPY entrypoint.sh /entrypoint.sh
-COPY launch_files/ /
+COPY launch_files/run_KMD.sh /run.sh
 
 # Setup user and working directory
 RUN chown -R komodian:notarygroup /home/komodian

@@ -1,1 +1,13 @@
 requests==2.31.0
+base58==2.1.1
+python-bitcoinlib==0.12.2
+slick-bitcoinrpc==0.1.4
+
+# For testing
+flake8==4.0.1
+pytest==7.2.1
+pytest-cov==4.1.0
+pytest-flake8==1.1.1
+
+mnemonic==0.20
+ecdsa==0.18.0
