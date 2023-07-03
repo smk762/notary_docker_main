@@ -1,9 +1,15 @@
 #!/bin/bash
 
-if [ -z "$1" ]
-  then
-    docker compose stop
-  else
-    docker compose stop $1
-fi
+source ./service_cli
 
+if [[ -z ${1-} ]]; then
+  for key in "${!service_cli[@]}"; do
+    ${service_cli[$key]} stop
+  done
+  sleep 30
+  docker compose stop
+else
+  ${service_cli[$1]} stop
+  sleep 30
+  docker compose stop $1
+fi
