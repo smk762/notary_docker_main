@@ -19,11 +19,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install $BUILD_PACKAGES -y
 
 # Build DB
-COPY build_files/build_db.sh /build_db.sh
+COPY build_scripts/build_db.sh /build_db.sh
 RUN /build_db.sh
 
 # Build
-COPY build_files/build_MIL.sh /build.sh
+COPY build_scripts/build_MIL.sh /build.sh
 RUN /build.sh "${COMMIT_HASH}"
 
 # Move binaries

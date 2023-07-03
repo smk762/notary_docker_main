@@ -19,7 +19,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt install $BUILD_PACKAGES -y
 
 # Build
-COPY build_files/build_EMC2.sh /build.sh
+COPY build_scripts/build_EMC2.sh /build.sh
 RUN /build.sh "${COMMIT_HASH}"
 
 # Move binaries
