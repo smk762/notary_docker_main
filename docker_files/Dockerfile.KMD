@@ -6,6 +6,7 @@ ARG COMMIT_HASH
 ARG GROUP_ID
 ARG USER_ID
 ARG SERVICE_CLI
+ARG LAUNCH_FILE
 RUN addgroup --gid ${GROUP_ID} notarygroup
 RUN adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} komodian
 WORKDIR /home/komodian
@@ -18,7 +19,7 @@ STOPSIGNAL SIGTERM
 
 COPY healthcheck.sh /usr/local/bin
 COPY entrypoint.sh /entrypoint.sh
-COPY launch_files/run_KMD.sh /run.sh
+COPY launch_files/${LAUNCH_FILE} /run.sh
 
 # Setup user and working directory
 RUN chown -R komodian:notarygroup /home/komodian

@@ -22,10 +22,19 @@ def create_cli_wrapper(coin: str) -> None:
         os.chmod(wrapper, 0o755)
 
 
+def create_explorer_launch_file(coin: str) -> None:
+    launch_file = f"docker_files/launch_files/run_{coin}_explorer.sh"
+    with open(launch_file, 'w') as f:
+        with open('templates/launch_explorer.template', 'r') as t:
+            for line in t.readlines():
+                line = line.replace('COIN', coin)
+                f.write(line)
+        os.chmod(launch_file, 0o755)
+
 def create_launch_file(coin: str) -> None:
     launch_file = f"docker_files/launch_files/run_{coin}.sh"
     with open(launch_file, 'w') as f:
-        with open('templates/launch.template', 'r') as t:
+        with open('templates/launch_daemon.template', 'r') as t:
             for line in t.readlines():
                 line = line.replace('COIN', coin)
                 line = line.replace('CLI', helper.get_cli(coin, True))
@@ -114,9 +123,10 @@ def create_conf(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=
             print(f"PLEASE MANUALLY ADD ANY ADDITIONAL {coin} WHITELIST ADDRESSES TO `const.py`!")
 
 
-def get_service_yaml(coin: str) -> None:
-    rpcport = COINS_DATA[coin]["rpcport"]
+def get_daemon_yaml(coin: str) -> None:
     p2pport = COINS_DATA[coin]["p2pport"]
+    rpcport = COINS_DATA[coin]["rpcport"] or p2pport + 1
+    zmqport = COINS_DATA[coin]["zmqport"] or p2pport + 2
     yaml = []
     yaml.append(f'  {coin.lower()}:\n')
     yaml.append('    env_file:\n')
@@ -129,9 +139,12 @@ def get_service_yaml(coin: str) -> None:
     yaml.append('        - GROUP_ID=$GROUP_ID\n')
     yaml.append(f'        - COMMIT_HASH={helper.get_commit_hash(coin)}\n')
     yaml.append(f'        - SERVICE_CLI="{helper.get_cli(coin, True)}"\n')
+    yaml.append(f'        - LAUNCH_FILE="run_{coin}.sh"\n')
     yaml.append('    ports:\n')
     yaml.append(f'      - "127.0.0.1:{p2pport}:{p2pport}"\n')
     yaml.append(f'      - "127.0.0.1:{rpcport}:{rpcport}"\n')
+    if IS_INSIGHT_EXPLORER:
+        yaml.append(f'      - "127.0.0.1:{zmqport}:{zmqport}"\n')
     yaml.append('    volumes:\n')
     if helper.is_smartchain(coin):
         yaml.append('      - <<: *zcash-params\n')
@@ -148,6 +161,42 @@ def get_service_yaml(coin: str) -> None:
     yaml.append('\n')
     return yaml
 
+
+def get_explorer_yaml(coin: str) -> None:
+    p2pport = COINS_DATA[coin]["p2pport"]
+    zmqport = COINS_DATA[coin]["zmqport"] or p2pport + 2
+    webport = COINS_DATA[coin]["webport"] or p2pport + 3
+    yaml = []
+    yaml.append(f'  {coin.lower()}_explorer:\n')
+    yaml.append('    env_file:\n')
+    yaml.append('      - .env\n')
+    yaml.append('    environment:\n')
+    yaml.append(f'      - TICKER={coin}\n')
+    yaml.append(f'      - TICKER_IP={coin.lower()}\n')
+    yaml.append(f'      - CONF_PATH={helper.get_data_path(coin, True)}\n')
+    yaml.append(f'      - ZMQ_PORT={zmqport}\n')
+    yaml.append(f'      - WEB_PORT={webport}\n')
+    yaml.append('    build:\n')
+    yaml.append('      context: ./docker_files\n')
+    yaml.append(f'      dockerfile: Dockerfile.explorer\n')
+    yaml.append('      args:\n')
+    yaml.append('        - USER_ID=$USER_ID\n')
+    yaml.append('        - GROUP_ID=$GROUP_ID\n')
+    yaml.append('    ports:\n')
+    yaml.append(f'      - "127.0.0.1:{webport}:{webport}"\n')
+    yaml.append('    volumes:\n')
+    yaml.append(f'      - {helper.get_data_path(coin, False)}:{helper.get_data_path(coin, True)}:ro\n')
+    yaml.append(f"    container_name: {coin.lower()}_explorer\n")
+    yaml.append('    restart: always\n')
+    yaml.append('    stop_grace_period: 15s\n')
+    yaml.append('    logging:\n')
+    yaml.append('      driver: "json-file"\n')
+    yaml.append('      options:\n')
+    yaml.append('        max-size: "20m"\n')
+    yaml.append('        max-file: "10"\n')
+    yaml.append(f'    command: ["/run.sh"]\n')
+    yaml.append('\n')
+    return yaml
 
 def create_cli_wrappers() -> None:
     for coin in DOCKER_COINS:
@@ -166,11 +215,13 @@ def create_confs() -> None:
         create_conf(coin)
 
 
-def create_compose_yaml() -> None:
+def create_compose_yaml(with_explorers=True) -> None:
     shutil.copy('templates/docker-compose.template', 'docker-compose.yml')
     with open('docker-compose.yml', 'a+') as conf:
         for coin in DOCKER_COINS:
-            conf.writelines(get_service_yaml(coin))
+            conf.writelines(get_daemon_yaml(coin))
+            if with_explorers:
+                conf.writelines(get_explorer_yaml(coin))
             
 
 if __name__ == '__main__':

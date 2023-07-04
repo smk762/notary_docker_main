@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -x
+
+cd /home/${USER}/komodo-install-explorer/COIN-explorer
+./COIN-explorer-start.sh
+
+set +x
