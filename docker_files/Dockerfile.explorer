@@ -17,6 +17,13 @@ RUN addgroup --gid ${GROUP_ID} notarygroup
 RUN adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} komodian
 WORKDIR /home/komodian
 
+ENV TZ=Europe/London
+RUN DEBIAN_FRONTEND=noninteractive && \
+     apt-get update && apt-get install -y tzdata
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+     echo $TZ > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
+
 RUN DEBIAN_FRONTEND=noninteractive && \
      apt update && \
      apt install git wget sudo python2 build-essential ufw python3 python3-pip libcurl4-openssl-dev libssl-dev build-essential -y && \

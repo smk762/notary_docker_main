@@ -2,6 +2,9 @@
 
 script_path=$(dirname $(realpath $0))
 
+# Updating submodules
+git submodule update --init --recursive --remote
+
 # Clear old files
 echo "Clearing old files..."
 rm -rf ${script_path}/cli_wrappers/*-cli
@@ -36,7 +39,6 @@ echo "Setting up conf files..."
 echo "Setting up cli wrappers..."
 ./configure.py clis
 
-
 if [[ "$1" == "nobuild" ]]; then
     echo "Not building docker images..."
 elif [ -z "$1" ]; then
@@ -53,7 +55,5 @@ for file in ${script_path}/cli_wrappers/*-cli; do
     f=$(basename ${file})
     sudo ln -sf ${script_path}/cli_wrappers/${f} /usr/local/bin/${f}
 done
-
-
 
 echo "Done! Use ./start to launch your daemons..."
