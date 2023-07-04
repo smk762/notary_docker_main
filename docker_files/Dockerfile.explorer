@@ -1,7 +1,9 @@
 FROM ubuntu:20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 
+ARG TICKER=${TICKER}
 ENV TICKER=${TICKER}
 ENV TICKER_IP=${TICKER_IP}
 ENV CONF_PATH=${CONF_PATH}
@@ -15,12 +17,16 @@ RUN addgroup --gid ${GROUP_ID} notarygroup
 RUN adduser --disabled-password --gecos '' --uid ${USER_ID} --gid ${GROUP_ID} komodian
 WORKDIR /home/komodian
 
-RUN apt update && apt install git wget sudo python2 build-essential ufw python3 python3-pip libcurl4-openssl-dev libssl-dev build-essential -y && echo $(which python2) && ln -s $(which python2) /usr/bin/python
+RUN DEBIAN_FRONTEND=noninteractive && \
+     apt update && \
+     apt install git wget sudo python2 build-essential ufw python3 python3-pip libcurl4-openssl-dev libssl-dev build-essential -y && \
+     echo $(which python2) && \
+     ln -s $(which python2) /usr/bin/python
 
-RUN git clone https://github.com/smk762/komodo-install-explorer -b dockerised && \
+RUN git clone https://github.com/smk762/komodo-install-explorer -b dockerised-notary-chains && \
      cd komodo-install-explorer && ls -al && pip3 install --upgrade pip && \
      pip3 install --upgrade -r requirements.txt && \
-     ./setup-explorer-directory.sh ${TICKER} && \
+     ./setup-explorer-directory.sh ${TICKER} && \ 
      ./install-explorer-docker.sh ${TICKER}
 
 COPY entrypoint.sh /entrypoint.sh
