@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -x
 
-cd /home/${USER}/komodo-install-explorer/COIN-explorer
+cd /home/${USER}/notary_docker_main/komodo-install-explorer/COIN-explorer
 ./COIN-explorer-start.sh
 
 set +x

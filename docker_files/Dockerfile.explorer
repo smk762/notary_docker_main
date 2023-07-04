@@ -23,8 +23,6 @@ RUN git clone https://github.com/smk762/komodo-install-explorer -b dockerised &&
      ./setup-explorer-directory.sh ${TICKER} && \
      ./install-explorer-docker.sh ${TICKER}
 
-
-
 COPY entrypoint.sh /entrypoint.sh
 COPY launch_files/run_${TICKER}_explorer.sh /run.sh
 # COPY templated exporer config files

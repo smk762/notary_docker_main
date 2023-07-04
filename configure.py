@@ -74,7 +74,7 @@ def create_conf(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=
     pubkey = helper.get_pubkey(coin)
     p2pport = COINS_DATA[coin]["p2pport"]
     rpcport = COINS_DATA[coin]["rpcport"] or p2pport + 1
-    zmqport = COINS_DATA[coin]["zmqport"] or p2pport + 2
+    zmqport = p2pport + 2
     zmq_url = f"tcp://{rpcip}:{zmqport}"
     with open(conf_file, 'w') as conf:
         # Auth creds for RPC
@@ -126,7 +126,7 @@ def create_conf(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=
 def get_daemon_yaml(coin: str) -> None:
     p2pport = COINS_DATA[coin]["p2pport"]
     rpcport = COINS_DATA[coin]["rpcport"] or p2pport + 1
-    zmqport = COINS_DATA[coin]["zmqport"] or p2pport + 2
+    zmqport = p2pport + 2
     yaml = []
     yaml.append(f'  {coin.lower()}:\n')
     yaml.append('    env_file:\n')
@@ -139,7 +139,7 @@ def get_daemon_yaml(coin: str) -> None:
     yaml.append('        - GROUP_ID=$GROUP_ID\n')
     yaml.append(f'        - COMMIT_HASH={helper.get_commit_hash(coin)}\n')
     yaml.append(f'        - SERVICE_CLI="{helper.get_cli(coin, True)}"\n')
-    yaml.append(f'        - LAUNCH_FILE="run_{coin}.sh"\n')
+    yaml.append(f'        - LAUNCH_FILE=run_{coin}.sh\n')
     yaml.append('    ports:\n')
     yaml.append(f'      - "127.0.0.1:{p2pport}:{p2pport}"\n')
     yaml.append(f'      - "127.0.0.1:{rpcport}:{rpcport}"\n')
@@ -164,8 +164,8 @@ def get_daemon_yaml(coin: str) -> None:
 
 def get_explorer_yaml(coin: str) -> None:
     p2pport = COINS_DATA[coin]["p2pport"]
-    zmqport = COINS_DATA[coin]["zmqport"] or p2pport + 2
-    webport = COINS_DATA[coin]["webport"] or p2pport + 3
+    zmqport = p2pport + 2
+    webport = p2pport + 3
     yaml = []
     yaml.append(f'  {coin.lower()}_explorer:\n')
     yaml.append('    env_file:\n')
@@ -182,6 +182,7 @@ def get_explorer_yaml(coin: str) -> None:
     yaml.append('      args:\n')
     yaml.append('        - USER_ID=$USER_ID\n')
     yaml.append('        - GROUP_ID=$GROUP_ID\n')
+    yaml.append(f'        - TICKER={coin}\n')
     yaml.append('    ports:\n')
     yaml.append(f'      - "127.0.0.1:{webport}:{webport}"\n')
     yaml.append('    volumes:\n')
@@ -206,6 +207,7 @@ def create_cli_wrappers() -> None:
 def create_launch_files() -> None:
     for coin in DOCKER_COINS:
         create_launch_file(coin)
+        create_explorer_launch_file(coin)
     if "KMD" not in DOCKER_COINS:
         create_launch_file("KMD")
 
@@ -219,8 +221,10 @@ def create_compose_yaml(with_explorers=True) -> None:
     shutil.copy('templates/docker-compose.template', 'docker-compose.yml')
     with open('docker-compose.yml', 'a+') as conf:
         for coin in DOCKER_COINS:
+            print(f'Adding {coin} to docker-compose.yml')
             conf.writelines(get_daemon_yaml(coin))
             if with_explorers:
+                print(f'Adding {coin} explorer to docker-compose.yml')
                 conf.writelines(get_explorer_yaml(coin))
             
 
