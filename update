@@ -15,7 +15,7 @@ rm -rf ${script_path}/cli_wrappers/*
 echo "Setting up .env file..."
 USER_ID=$(id -u)
 GROUP_ID=$(id -g)
-echo "USER_ID=${USER_ID}" >> .env
+echo "USER_ID=${USER_ID}" > .env
 echo "GROUP_ID=${GROUP_ID}" >> .env
 
 # Update repo
@@ -26,14 +26,14 @@ git pull || sleep 5
 echo "Setting up launch files..."
 ./configure.py launch
 
+# Setting up conf files
+echo "Setting up conf files..."
+./configure.py confs
+
 # Updating docker-compose yaml
 echo "Updating docker-compose.yml..."
 ./configure.py yaml
 sed "s/USERNAME/${USER}/gi" -i "docker-compose.yml"
-
-# Setting up conf files
-echo "Setting up conf files..."
-./configure.py confs
 
 # Setting up cli wrappers
 echo "Setting up cli wrappers..."
