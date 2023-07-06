@@ -1,14 +1,11 @@
-FROM ubuntu:20.04
+FROM ubuntu:20.04 as builder
 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV DEBIAN_FRONTEND=noninteractive
 
-ARG TICKER=${TICKER}
-ENV TICKER=${TICKER}
-ENV TICKER_IP=${TICKER_IP}
-ENV CONF_PATH=${CONF_PATH}
-ENV ZMQ_PORT=${ZMQ_PORT}
-ENV WEB_PORT=${WEB_PORT}
+
+ENV NVM_DIR /usr/local/nvm
+ENV NODE_VERSION 4
 
 # Setup up user and working directory
 ARG GROUP_ID
@@ -25,20 +22,59 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN DEBIAN_FRONTEND=noninteractive && \
-     apt update && \
-     apt install git wget sudo python2 build-essential ufw python3 python3-pip libcurl4-openssl-dev libssl-dev build-essential -y && \
-     echo $(which python2) && \
-     ln -s $(which python2) /usr/bin/python
+     apt update -y && \
+     apt install -y git wget nano unzip git curl build-essential snapd \
+     pkg-config jq ufw wget m4 autoconf libtool ntp ntpdate g++-multilib \
+     libc6-dev libevent-dev libncurses5-dev zlib1g-dev libboost-all-dev \
+     bsdmainutils automake libprotobuf-dev protobuf-compiler libqrencode-dev \
+     libssl-dev libsodium-dev libzmq3-dev libdb++-dev \
+     python python2 python3 python3-pip python3-venv nginx libcurl4-openssl-dev && \
+     echo $(which python2) && ln -sf $(which python2) /usr/bin/python
+
+RUN mkdir -p $NVM_DIR && \
+     touch ~/.bashrc && \
+     chmod +x ~/.bashrc
+RUN wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.39.3/install.sh | bash
+RUN . $NVM_DIR/nvm.sh \
+     && nvm install node && \
+     nvm install $NODE_VERSION && \
+     nvm alias default $NODE_VERSION && \
+     nvm use default
+
+# add node and npm to path so the commands are available
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+
+FROM builder
+
+ARG TICKER=${TICKER}
+ARG TICKER_IP=${TICKER_IP}
+ARG CONF_PATH=${CONF_PATH}
+ARG P2P_PORT=${P2P_PORT}
+ARG RPC_PORT=${RPC_PORT}
+ARG RPC_USER=${RPC_USER}
+ARG RPC_PASS=${RPC_PASS}
+ARG ZMQ_PORT=${ZMQ_PORT}
+ARG WEB_PORT=${WEB_PORT}
 
 RUN git clone https://github.com/smk762/komodo-install-explorer -b dockerised-notary-chains && \
-     cd komodo-install-explorer && ls -al && pip3 install --upgrade pip && \
+     echo "TICKER=${TICKER}" > /home/komodian/komodo-install-explorer/.env && \
+     echo "TICKER_IP=${TICKER_IP}" >> /home/komodian/komodo-install-explorer/.env && \
+     echo "CONF_PATH=${CONF_PATH}" >> /home/komodian/komodo-install-explorer/.env && \
+     echo "P2P_PORT=${P2P_PORT}" >> /home/komodian/komodo-install-explorer/.env && \
+     echo "RPC_PORT=${RPC_PORT}" >> /home/komodian/komodo-install-explorer/.env && \
+     echo "RPC_USER=${RPC_USER}" >> /home/komodian/komodo-install-explorer/.env && \
+     echo "RPC_PASS=${RPC_PASS}" >> /home/komodian/komodo-install-explorer/.env && \
+     echo "ZMQ_PORT=${ZMQ_PORT}" >> /home/komodian/komodo-install-explorer/.env && \
+     echo "WEB_PORT=${WEB_PORT}" >> /home/komodian/komodo-install-explorer/.env 
+
+RUN cd komodo-install-explorer && ls -al && pip3 install --upgrade pip && \
      pip3 install --upgrade -r requirements.txt && \
      ./setup-explorer-directory.sh ${TICKER} && \ 
      ./install-explorer-docker.sh ${TICKER}
 
 COPY entrypoint.sh /entrypoint.sh
 COPY launch_files/run_${TICKER}_explorer.sh /run.sh
-# COPY templated exporer config files
 
 RUN chown -R komodian:notarygroup /home/komodian
 USER komodian
