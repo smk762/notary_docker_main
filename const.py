@@ -11,7 +11,20 @@ SCRIPT_PATH = os.path.realpath(os.path.dirname(__file__))
 LAUNCH_PARAMS = json.load(open(os.path.join(SCRIPT_PATH, "smartchains.json")))
 
 # Any additional metadata about a coin (e.g. which dPoW server) can be added in coins_data.json
-COINS_DATA = json.load(open(os.path.join(SCRIPT_PATH, "coins_data.json")))
+COINS_DATA = json.load(open(os.path.join(SCRIPT_PATH, "coins_data.json"), "r"))
+for k, v in COINS_DATA.items():
+    p2pport = v["p2pport"]
+    rpcport = p2pport + 1
+    zmqport = p2pport + 2
+    webport = p2pport + 3
+    COINS_DATA[k].update({
+        "p2pport": p2pport,
+        "rpcport": rpcport,
+        "zmqport": zmqport,
+        "webport": webport
+    })
+json.dump(COINS_DATA, open(os.path.join(SCRIPT_PATH, "coins_data.json"), "w"), indent=4)
+    
 
 # Alternatively, you can specify a list of coins to build / launch here
 DOCKER_COINS = json.load(open(os.path.join(SCRIPT_PATH, "docker_coins.json")))
