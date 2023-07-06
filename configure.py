@@ -73,8 +73,9 @@ def create_conf(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=
     rpcuser, rpcpass = helper.get_rpc_creds(conf_file)
     pubkey = helper.get_pubkey(coin)
     p2pport = COINS_DATA[coin]["p2pport"]
-    rpcport = COINS_DATA[coin]["rpcport"] or p2pport + 1
+    rpcport = p2pport + 1
     zmqport = p2pport + 2
+    webport = p2pport + 3
     zmq_url = f"tcp://{rpcip}:{zmqport}"
     with open(conf_file, 'w') as conf:
         # Auth creds for RPC
@@ -125,8 +126,9 @@ def create_conf(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=
 
 def get_daemon_yaml(coin: str) -> None:
     p2pport = COINS_DATA[coin]["p2pport"]
-    rpcport = COINS_DATA[coin]["rpcport"] or p2pport + 1
+    rpcport = p2pport + 1
     zmqport = p2pport + 2
+    webport = p2pport + 3
     yaml = []
     yaml.append(f'  {coin.lower()}:\n')
     yaml.append('    env_file:\n')
@@ -163,7 +165,10 @@ def get_daemon_yaml(coin: str) -> None:
 
 
 def get_explorer_yaml(coin: str) -> None:
+    conf_file = helper.get_conf(coin, False)
+    rpcuser, rpcpass = helper.get_rpc_creds(conf_file)
     p2pport = COINS_DATA[coin]["p2pport"]
+    rpcport = p2pport + 1
     zmqport = p2pport + 2
     webport = p2pport + 3
     yaml = []
@@ -173,7 +178,11 @@ def get_explorer_yaml(coin: str) -> None:
     yaml.append('    environment:\n')
     yaml.append(f'      - TICKER={coin}\n')
     yaml.append(f'      - TICKER_IP={coin.lower()}\n')
-    yaml.append(f'      - CONF_PATH={helper.get_data_path(coin, True)}\n')
+    yaml.append(f'      - CONF_PATH={helper.get_conf(coin, True)}\n')
+    yaml.append(f'      - P2P_PORT={p2pport}\n')
+    yaml.append(f'      - RPC_PORT={rpcport}\n')
+    yaml.append(f'      - RPC_PASS={rpcpass}\n')
+    yaml.append(f'      - RPC_USER={rpcuser}\n')
     yaml.append(f'      - ZMQ_PORT={zmqport}\n')
     yaml.append(f'      - WEB_PORT={webport}\n')
     yaml.append('    build:\n')
@@ -183,6 +192,14 @@ def get_explorer_yaml(coin: str) -> None:
     yaml.append('        - USER_ID=$USER_ID\n')
     yaml.append('        - GROUP_ID=$GROUP_ID\n')
     yaml.append(f'        - TICKER={coin}\n')
+    yaml.append(f'        - TICKER_IP={coin.lower()}\n')
+    yaml.append(f'        - CONF_PATH={helper.get_conf(coin, True)}\n')
+    yaml.append(f'        - RPC_PASS={rpcpass}\n')
+    yaml.append(f'        - RPC_USER={rpcuser}\n')
+    yaml.append(f'        - P2P_PORT={p2pport}\n')
+    yaml.append(f'        - RPC_PORT={rpcport}\n')
+    yaml.append(f'        - ZMQ_PORT={zmqport}\n')
+    yaml.append(f'        - WEB_PORT={webport}\n')
     yaml.append('    ports:\n')
     yaml.append(f'      - "127.0.0.1:{webport}:{webport}"\n')
     yaml.append('    volumes:\n')
