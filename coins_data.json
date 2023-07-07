@@ -103,7 +103,7 @@
         },
         "p2pport": 23225,
         "rpcport": 23226,
-        "conf": ".komodo/THC/THC.conf",
+        "conf": ".komodo/GLEEC/GLEEC.conf",
         "dpow": {
             "server": "main",
             "utxo_value": 0.0001,
@@ -126,7 +126,7 @@
         },
         "p2pport": 12985,
         "rpcport": 12986,
-        "conf": ".komodo/THC/THC.conf",
+        "conf": ".komodo/ILN/ILN.conf",
         "dpow": {
             "server": "main",
             "utxo_value": 0.0001,
@@ -149,7 +149,7 @@
         },
         "p2pport": 8426,
         "rpcport": 8427,
-        "conf": ".komodo/THC/THC.conf",
+        "conf": ".komodo/NINJA/NINJA.conf",
         "dpow": {
             "server": "main",
             "utxo_value": 0.0001,
@@ -172,7 +172,7 @@
         },
         "p2pport": 10701,
         "rpcport": 10702,
-        "conf": ".komodo/THC/THC.conf",
+        "conf": ".komodo/KOIN/KOIN.conf",
         "dpow": {
             "server": "main",
             "utxo_value": 0.0001,
@@ -195,7 +195,7 @@
         },
         "p2pport": 45452,
         "rpcport": 45453,
-        "conf": ".komodo/THC/THC.conf",
+        "conf": ".komodo/PIRATE/PIRATE.conf",
         "dpow": {
             "server": "main",
             "utxo_value": 0.0001,
@@ -218,7 +218,7 @@
         },
         "p2pport": 11340,
         "rpcport": 11341,
-        "conf": ".komodo/THC/THC.conf",
+        "conf": ".komodo/SUPERNET/SUPERNET.conf",
         "dpow": {
             "server": "main",
             "utxo_value": 0.0001,
