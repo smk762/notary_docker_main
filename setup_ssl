@@ -1,0 +1,47 @@
+#!/bin/bash
+
+echo "This script will setup SSL for each explorer as a subdomain for your domain name."
+
+if [ -z "$DOMAIN" ]; then
+    if [ -z "$1" ]; then
+        read -p "Please enter your domain name (e.g. komodo.earth): " DOMAIN
+    else
+        DOMAIN="${1}"
+    fi
+fi
+
+echo "Opening port 80 and 443 for certbot to work (needs sudo)"
+sudo ufw allow 80 comment 'http'
+sudo ufw allow 443 comment 'https'
+
+echo "You will need to have a DNS record for each subdomain pointing to this server."
+coins=($(jq -r .[] docker_coins.json))
+for i in "${coins[@]}"; do
+    coin=$(echo "$i" | awk '{print tolower($0)}');
+    subdomain="$coin.$DOMAIN"
+    echo "- $subdomain"
+done
+
+read -p "Once these are setup, press enter to continue"
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+LETSENCRYPT_VOLUME_DIR=$DIR/letsencrypt
+EMAIL="my-email@gmail.com"
+read -p "Enter your email for renewal reminders: " EMAIL
+
+for i in "${coins[@]}"; do
+    coin=$(echo "$i" | awk '{print tolower($0)}');
+    subdomain="$coin.$DOMAIN"
+    sudo certbot certonly -d ${subdomain} --nginx --non-interactive --agree-tos --email ${EMAIL} 
+    echo "- $subdomain"
+    ./configure.py create_nginx_conf ${coin} ${subdomain}
+    if sudo test -f "/etc/letsencrypt/live/${subdomain}/fullchain.pem"; then
+        sudo cp nginx/${coin}-explorer.serverblock /etc/nginx/sites-available/${coin}-explorer.serverblock
+        sudo ln -s /etc/nginx/sites-available/${coin}-explorer.serverblock /etc/nginx/sites-enabled/${coin}-explorer.serverblock
+    else
+        echo "SSL certificate [/etc/letsencrypt/live/${subdomain}/fullchain.pem] not found. Please check if the domain name [${subdomain}] is correct and if the certificate was created."
+    fi
+done
+
+echo "Restarting nginx (needs sudo)"
+sudo systemctl restart nginx

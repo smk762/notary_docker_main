@@ -243,7 +243,22 @@ def create_compose_yaml(with_explorers=True) -> None:
             if with_explorers:
                 print(f'Adding {coin} explorer to docker-compose.yml')
                 conf.writelines(get_explorer_yaml(coin))
-            
+
+
+def create_nginx_conf(self, coin, subdomain, webroot="html", proxy_host="127.0.0.1"):
+    blockname = f"{self.script_path}/nginx/{coin}-explorer.serverblock"
+    webport = COINS_DATA[coin]["p2pport"] + 3
+    with open(f"{self.script_path}/templates/nginx_serverblock.template", "r") as r:
+        with open(blockname, "w") as w:
+            for line in r.readlines():
+                line = line.replace("COIN", coin)
+                line = line.replace("HOMEDIR", HOME)
+                line = line.replace("WEBROOT", webroot)
+                line = line.replace("SUBDOMAIN", subdomain)
+                line = line.replace("PROXY_HOST", proxy_host)
+                line = line.replace("EXPLORER_PORT", str(webport))
+                w.write(f"{line}")
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -256,5 +271,15 @@ if __name__ == '__main__':
         create_launch_files()
     elif sys.argv[1] == 'yaml':
         create_compose_yaml()
+    elif sys.argv[1] == 'create_nginx_conf':
+        if len(sys.argv) < 4:
+            subdomain = input('Subdomain: ')
+        else:
+            subdomain = sys.argv[3]
+        if len(sys.argv) < 3:
+            coin = input('Coin ticker: ')
+        else:
+            coin = sys.argv[2]
+        create_nginx_conf(coin, subdomain)
     else:
-        print('Invalid option, must be in ["clis", "confs", "launch", "yaml]')
+        print('Invalid option, must be in ["clis", "confs", "launch", "yaml", "create_nginx_conf"]')
