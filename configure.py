@@ -248,7 +248,7 @@ def create_compose_yaml(with_explorers=True) -> None:
 
 def create_nginx_conf(coin, subdomain, webroot="html", proxy_host="127.0.0.1"):
     blockname = f"{SCRIPT_PATH}/nginx/{coin}-explorer.serverblock"
-    webport = COINS_DATA[coin]["p2pport"] + 3
+    webport = COINS_DATA[coin.upper()]["p2pport"] + 3
     with open(f"{SCRIPT_PATH}/templates/nginx_serverblock.template", "r") as r:
         with open(blockname, "w") as w:
             for line in r.readlines():
