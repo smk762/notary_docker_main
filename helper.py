@@ -24,7 +24,7 @@ def get_dockerfile(coin):
 
 def generate_rpc_pass(length: int=24) -> str:
     '''Generates a random string for the rpcuser and rpcpass'''
-    special_chars = "@~-_|():+"
+    special_chars = "~.-_"
     rpc_chars = string.ascii_letters + string.digits + special_chars
     return "".join(secrets.choice(rpc_chars) for _ in range(length))
 
