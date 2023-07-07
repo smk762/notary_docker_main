@@ -216,6 +216,7 @@ def get_explorer_yaml(coin: str) -> None:
     yaml.append('\n')
     return yaml
 
+
 def create_cli_wrappers() -> None:
     for coin in DOCKER_COINS:
         create_cli_wrapper(coin)
@@ -245,10 +246,10 @@ def create_compose_yaml(with_explorers=True) -> None:
                 conf.writelines(get_explorer_yaml(coin))
 
 
-def create_nginx_conf(self, coin, subdomain, webroot="html", proxy_host="127.0.0.1"):
-    blockname = f"{self.script_path}/nginx/{coin}-explorer.serverblock"
+def create_nginx_conf(coin, subdomain, webroot="html", proxy_host="127.0.0.1"):
+    blockname = f"{SCRIPT_PATH}/nginx/{coin}-explorer.serverblock"
     webport = COINS_DATA[coin]["p2pport"] + 3
-    with open(f"{self.script_path}/templates/nginx_serverblock.template", "r") as r:
+    with open(f"{SCRIPT_PATH}/templates/nginx_serverblock.template", "r") as r:
         with open(blockname, "w") as w:
             for line in r.readlines():
                 line = line.replace("COIN", coin)
