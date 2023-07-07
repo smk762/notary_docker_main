@@ -37,7 +37,7 @@ for i in "${coins[@]}"; do
     ./configure.py create_nginx_conf ${coin} ${subdomain}
     if sudo test -f "/etc/letsencrypt/live/${subdomain}/fullchain.pem"; then
         sudo cp nginx/${coin}-explorer.serverblock /etc/nginx/sites-available/${coin}-explorer.serverblock
-        sudo ln -s /etc/nginx/sites-available/${coin}-explorer.serverblock /etc/nginx/sites-enabled/${coin}-explorer.serverblock
+        sudo ln -sf /etc/nginx/sites-available/${coin}-explorer.serverblock /etc/nginx/sites-enabled/${coin}-explorer.serverblock
     else
         echo "SSL certificate [/etc/letsencrypt/live/${subdomain}/fullchain.pem] not found. Please check if the domain name [${subdomain}] is correct and if the certificate was created."
     fi
