@@ -41,11 +41,8 @@ def create_daemon_confs(coin: str, txindex: int=1, addressindex: int=0, spentind
     with the DexStats bootstraps. If you want to use the bootstrap, without a reindex,
     don't change the indexes. For block explorers, all indexes should be set to 1.
     '''
-    if IS_INSIGHT_EXPLORER:
-        txindex = 1
-        addressindex = 1
-        spentindex = 1
-        timestampindex = 1
+    
+
 
     # Create conf file if not existing
     data_path = helper.get_data_path(coin, False)
@@ -72,20 +69,19 @@ def create_daemon_confs(coin: str, txindex: int=1, addressindex: int=0, spentind
         # Auth creds for RPC
         conf.write(f'rpcuser={rpcuser}\n')
         conf.write(f'rpcpassword={rpcpass}\n')
-        # Maintain an index of all addresses and balances.
-        conf.write(f'addressindex={addressindex}\n')
-        # Maintain an index of all spent transactions.
-        conf.write(f'spentindex={spentindex}\n')
         # Maintain an index of all transactions.
-        conf.write(f'txindex={txindex}\n')
-        # Maintain an index of timestamps for all block hashes.
-        conf.write(f'timestampindex={timestampindex}\n')
+        conf.write(f'txindex=1\n')
         if IS_INSIGHT_EXPLORER:
+            # Maintain an index of all addresses and balances.
+            conf.write(f'addressindex=1\n')
+            # Maintain an index of all spent transactions.
+            conf.write(f'spentindex=1\n')
+            # Maintain an index of timestamps for all block hashes.
+            conf.write(f'timestampindex=1\n')
             conf.write(f'zmqpubrawtx={zmq_url}\n')
             conf.write(f'zmqpubhashblock={zmq_url}\n')
             conf.write(f'uacomment=bitcore\n')
             conf.write(f'showmetrics=0\n')
-
         # Required for JSON RPC commands
         conf.write('server=1\n')
         # Run in the background as a daemon and accept commands
@@ -176,6 +172,8 @@ def get_explorer_yaml(coin: str) -> None:
     yaml.append(f'      - RPC_USER="{rpcuser}"\n')
     yaml.append(f'      - ZMQ_PORT={zmqport}\n')
     yaml.append(f'      - WEB_PORT={webport}\n')
+    yaml.append('    depends_on:\n')
+    yaml.append(f'      - {coin.lower()}\n')
     yaml.append('    build:\n')
     yaml.append('      context: ./docker_files\n')
     yaml.append(f'      dockerfile: Dockerfile.explorer\n')

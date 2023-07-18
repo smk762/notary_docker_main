@@ -66,4 +66,4 @@ done
 
 echo "Done!"
 echo "Use ./start to launch your daemons..."
-echo "To setup SSL certificates, run ./setup_ssl to launch your daemons..."
+echo "To setup SSL certificates, run ./setup_ssl"
