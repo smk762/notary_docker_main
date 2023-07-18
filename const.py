@@ -6,12 +6,18 @@ import requests
 
 HOME = os.path.expanduser('~')
 SCRIPT_PATH = os.path.realpath(os.path.dirname(__file__))
+IS_NOTARY = False
+IS_INSIGHT_EXPLORER = True
+
+# Get the list of coins to build & launch. Edit this file to add/remove coins.
+DOCKER_COINS = json.load(open(os.path.join(SCRIPT_PATH, "docker_coins.json")))
 
 # Sourced from https://github.com/KomodoPlatform/coins/blob/master/launch/smartchains.json
 LAUNCH_PARAMS = json.load(open(os.path.join(SCRIPT_PATH, "smartchains.json")))
 
-# Any additional metadata about a coin (e.g. which dPoW server) can be added in coins_data.json
+# Any additional metadata about a coin (e.g. which dPoW server) can be added maunally in coins_data.json
 COINS_DATA = json.load(open(os.path.join(SCRIPT_PATH, "coins_data.json"), "r"))
+# Its cleaner if we standarise the ports for each coin with a simple offset
 for k, v in COINS_DATA.items():
     p2pport = v["p2pport"]
     rpcport = p2pport + 1
@@ -25,12 +31,6 @@ for k, v in COINS_DATA.items():
     })
 json.dump(COINS_DATA, open(os.path.join(SCRIPT_PATH, "coins_data.json"), "w"), indent=4)
     
-
-# Alternatively, you can specify a list of coins to build / launch here
-DOCKER_COINS = json.load(open(os.path.join(SCRIPT_PATH, "docker_coins.json")))
-
-IS_NOTARY = False
-IS_INSIGHT_EXPLORER = True
 
 # Whitelist of addresses that can send funds. This is used to mitigate spamming.
 ADDRESS_WHITELIST = {
@@ -55,6 +55,8 @@ DAEMON_PEERS = {
     "Marmara2": "89.19.26.212"
 }
 
+# Get the latest commit hashes for the dPoW notary daemons
+# When this file changes, we need to run `./update`
 commit_hashes_url = "https://raw.githubusercontent.com/KomodoPlatform/dPoW/master/doc/daemon_versions.json"
 COMMIT_HASHES = requests.get(commit_hashes_url).json()
 with open(os.path.join(SCRIPT_PATH, "daemon_versions.json"), "w") as f:

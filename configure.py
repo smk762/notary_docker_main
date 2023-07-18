@@ -12,16 +12,6 @@ from const import HOME, SCRIPT_PATH, COINS_DATA, LAUNCH_PARAMS, \
 from based_58 import get_addr_from_pubkey
 
 
-def create_cli_wrapper(coin: str) -> None:
-    host_cli = helper.get_cli(coin, False)
-    container_cli = helper.get_cli(coin, True)
-    wrapper = f"cli_wrappers/{host_cli}"
-    with open(wrapper, 'w') as conf:
-        conf.write('#!/bin/bash\n')
-        conf.write(f'docker exec -it {coin.lower()} {container_cli} "$@"\n')
-        os.chmod(wrapper, 0o755)
-
-
 def create_explorer_launch_file(coin: str) -> None:
     launch_file = f"docker_files/launch_files/run_{coin}_explorer.sh"
     with open(launch_file, 'w') as f:
@@ -31,7 +21,8 @@ def create_explorer_launch_file(coin: str) -> None:
                 f.write(line)
         os.chmod(launch_file, 0o755)
 
-def create_launch_file(coin: str) -> None:
+
+def create_daemon_launch_file(coin: str) -> None:
     launch_file = f"docker_files/launch_files/run_{coin}.sh"
     with open(launch_file, 'w') as f:
         with open('templates/launch_daemon.template', 'r') as t:
@@ -44,7 +35,7 @@ def create_launch_file(coin: str) -> None:
         os.chmod(launch_file, 0o755)
 
 
-def create_conf(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=1, timestampindex=0) -> None:
+def create_daemon_confs(coin: str, txindex: int=1, addressindex: int=0, spentindex: int=1, timestampindex=0) -> None:
     '''
     Creates a TICKER.conf file on the host. `addressindex=1` is incompatible 
     with the DexStats bootstraps. If you want to use the bootstrap, without a reindex,
@@ -217,22 +208,14 @@ def get_explorer_yaml(coin: str) -> None:
     return yaml
 
 
-def create_cli_wrappers() -> None:
-    for coin in DOCKER_COINS:
-        create_cli_wrapper(coin)
-
-
-def create_launch_files() -> None:
-    for coin in DOCKER_COINS:
-        create_launch_file(coin)
-        create_explorer_launch_file(coin)
-    if "KMD" not in DOCKER_COINS:
-        create_launch_file("KMD")
-
-
-def create_confs() -> None:
-    for coin in DOCKER_COINS:
-        create_conf(coin)
+def create_cli_wrapper(coin: str) -> None:
+    host_cli = helper.get_cli(coin, False)
+    container_cli = helper.get_cli(coin, True)
+    wrapper = f"cli_wrappers/{host_cli}"
+    with open(wrapper, 'w') as conf:
+        conf.write('#!/bin/bash\n')
+        conf.write(f'docker exec {coin.lower()} {container_cli} "$@"\n')
+        os.chmod(wrapper, 0o755)
 
 
 def create_compose_yaml(with_explorers=True) -> None:
@@ -246,7 +229,7 @@ def create_compose_yaml(with_explorers=True) -> None:
                 conf.writelines(get_explorer_yaml(coin))
 
 
-def create_nginx_conf(coin, subdomain, webroot="html", proxy_host="127.0.0.1"):
+def nginx_conf(coin, subdomain, webroot="html", proxy_host="127.0.0.1"):
     blockname = f"{SCRIPT_PATH}/nginx/{coin}-explorer.serverblock"
     webport = COINS_DATA[coin.upper()]["p2pport"] + 3
     with open(f"{SCRIPT_PATH}/templates/nginx_serverblock.template", "r") as r:
@@ -261,26 +244,43 @@ def create_nginx_conf(coin, subdomain, webroot="html", proxy_host="127.0.0.1"):
                 w.write(f"{line}")
 
 
+def create_cli_wrappers() -> None:
+    for coin in DOCKER_COINS:
+        create_cli_wrapper(coin)
+
+
+def create_daemon_launch_files() -> None:
+    for coin in DOCKER_COINS:
+        create_daemon_launch_file(coin)
+        create_explorer_launch_file(coin)
+
+
+def create_daemon_confss() -> None:
+    for coin in DOCKER_COINS:
+        create_daemon_confs(coin)
+
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print('No arguments given, exiting.')
     elif sys.argv[1] == 'clis':
         create_cli_wrappers()
-    elif sys.argv[1] == 'confs':
-        create_confs()
-    elif sys.argv[1] == 'launch':
-        create_launch_files()
+    elif sys.argv[1] == 'daemon_confs':
+        create_daemon_confss()
+    elif sys.argv[1] == 'launch_files':
+        create_daemon_launch_files()
     elif sys.argv[1] == 'yaml':
         create_compose_yaml()
-    elif sys.argv[1] == 'create_nginx_conf':
+    elif sys.argv[1] == 'nginx_conf':
         if len(sys.argv) < 4:
-            subdomain = input('Subdomain: ')
+            subdomain = input('Subdomain (e.g. doc.komodo.earth): ')
         else:
             subdomain = sys.argv[3]
         if len(sys.argv) < 3:
-            coin = input('Coin ticker: ')
+            coin = input('Coin ticker (e.g. DOC): ')
         else:
             coin = sys.argv[2]
-        create_nginx_conf(coin, subdomain)
+        nginx_conf(coin, subdomain)
     else:
-        print('Invalid option, must be in ["clis", "confs", "launch", "yaml", "create_nginx_conf"]')
+        print('Invalid option, must be in ["clis", "confs", "launch", "yaml", "nginx_conf"]')

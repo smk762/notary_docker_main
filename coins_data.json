@@ -22,6 +22,29 @@
         "zmqport": 20850,
         "webport": 20851
     },
+    "NINJA": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=NINJA",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
+        },
+        "p2pport": 8426,
+        "rpcport": 8427,
+        "conf": ".komodo/NINJA/NINJA.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        },
+        "zmqport": 8428,
+        "webport": 8429
+    },
     "KMD": {
         "daemon": "komodod",
         "cli": "komodo-cli",
@@ -136,29 +159,6 @@
         },
         "zmqport": 12987,
         "webport": 12988
-    },
-    "NINJA": {
-        "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=NINJA",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 8426,
-        "rpcport": 8427,
-        "conf": ".komodo/NINJA/NINJA.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 8428,
-        "webport": 8429
     },
     "KOIN": {
         "daemon": "komodod",

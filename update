@@ -18,27 +18,31 @@ GROUP_ID=$(id -g)
 echo "USER_ID=${USER_ID}" > .env
 echo "GROUP_ID=${GROUP_ID}" >> .env
 
+# Check branch to get coins list
+branch=$(git branch --show-current)
+
 # Update repo
 echo "Updating repository..."
-git pull || sleep 5
+git pull || sleep 5 # This sleep is for letting the user see errors when git pull fails
 
-# Creating launch files
+# Creating launch files for daemons and explorers
 echo "Setting up launch files..."
-./configure.py launch
+./configure.py launch_files
 
-# Setting up conf files
+# Setting up daemon conf files
 echo "Setting up conf files..."
-./configure.py confs
+./configure.py daemon_confs
 
-# Updating docker-compose yaml
+# Generate service blocks for each daemon and explorer in docker-compose.yaml
 echo "Updating docker-compose.yml..."
 ./configure.py yaml
 sed "s/USERNAME/${USER}/gi" -i "docker-compose.yml"
 
-# Setting up cli wrappers
+# Setting up cli wrappers for wach daemon
 echo "Setting up cli wrappers..."
 ./configure.py clis
 
+# Use the `nobuild` argument to skip building docker images
 if [[ "$1" == "nobuild" ]]; then
     echo "Not building docker images..."
 elif [ -z "$1" ]; then
@@ -51,9 +55,13 @@ else
     ./stop $1
 fi
 
+mkdir -p /home/${USER}/cli-wrappers
+echo "PATH=$PATH:/home/${USER}/cli-wrappers" >> /home/${USER}/.bashrc
 for file in ${script_path}/cli_wrappers/*-cli; do
     f=$(basename ${file})
-    sudo ln -sf ${script_path}/cli_wrappers/${f} /usr/local/bin/${f}
+    ln -sf ${script_path}/cli_wrappers/${f} /home/${USER}/cli-wrappers/${f}
 done
 
-echo "Done! Use ./start to launch your daemons..."
+echo "Done!"
+echo "Use ./start to launch your daemons..."
+echo "To setup SSL certificates, run ./setup_ssl to launch your daemons..."

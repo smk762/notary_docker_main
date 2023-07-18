@@ -34,7 +34,7 @@ for i in "${coins[@]}"; do
     subdomain="$coin.$DOMAIN"
     sudo certbot certonly -d ${subdomain} --nginx --non-interactive --agree-tos --email ${EMAIL} 
     echo "- $subdomain"
-    ./configure.py create_nginx_conf ${coin} ${subdomain}
+    ./configure.py nginx_conf ${coin} ${subdomain}
     if sudo test -f "/etc/letsencrypt/live/${subdomain}/fullchain.pem"; then
         sudo cp nginx/${coin}-explorer.serverblock /etc/nginx/sites-available/${coin}-explorer.serverblock
         sudo ln -sf /etc/nginx/sites-available/${coin}-explorer.serverblock /etc/nginx/sites-enabled/${coin}-explorer.serverblock
