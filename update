@@ -2,7 +2,12 @@
 
 script_path=$(dirname $(realpath $0))
 
+# Check branch to match with insight submodule
+branch=$(git branch --show-current)
+
 # Updating submodules
+git config --file=.gitmodules submodule.komodo-install-explorer.branch ${branch}
+git submodule sync
 git submodule update --init --recursive --remote
 
 # Clear old files
@@ -17,9 +22,6 @@ USER_ID=$(id -u)
 GROUP_ID=$(id -g)
 echo "USER_ID=${USER_ID}" > .env
 echo "GROUP_ID=${GROUP_ID}" >> .env
-
-# Check branch to get coins list
-branch=$(git branch --show-current)
 
 # Update repo
 echo "Updating repository..."
