@@ -1,17 +1,8 @@
 # Declare the associative array
 declare -A service_cli
-
+# TODO: Generate this via configure.py
 # Assign values to the array
-service_cli["iln"]="iln-cli"
-service_cli["gleec"]="gleec-cli"
-service_cli["litecoin"]="litecoin-cli"
-service_cli["kmd"]="komodo-cli"
-service_cli["ccl"]="ccl-cli"
-service_cli["clc"]="clc-cli"
 service_cli["pirate"]="pirate-cli"
 service_cli["doc"]="doc-cli"
 service_cli["marty"]="marty-cli"
-service_cli["koin"]="koin-cli"
 service_cli["ninja"]="ninja-cli"
-service_cli["supernet"]="supernet-cli"
-service_cli["thc"]="thc-cli"
