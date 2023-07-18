@@ -10,6 +10,7 @@ Group 1:
 - MARTY
 - PIRATE
 - NINJA
+- ZOMBIE
 
 
 ---

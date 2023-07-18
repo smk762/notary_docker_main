@@ -206,6 +206,22 @@
         "zmqport": 45454,
         "webport": 45455
     },
+    "ZOMBIE": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=ZOMBIE",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
+        },
+        "p2pport": 56153,
+        "rpcport": 56154,
+        "conf": ".komodo/ZOMBIE/ZOMBIE.conf",
+        "zmqport": 56155,
+        "webport": 56156
+    },
     "SUPERNET": {
         "daemon": "komodod",
         "cli": "komodo-cli -ac_name=SUPERNET",
