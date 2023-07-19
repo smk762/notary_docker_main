@@ -1,276 +1,8 @@
 {
-    "CCL": {
-        "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=CCL",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 20848,
-        "rpcport": 20849,
-        "conf": ".komodo/CCL/CCL.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 20850,
-        "webport": 20851
-    },
-    "NINJA": {
-        "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=NINJA",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 8426,
-        "rpcport": 8427,
-        "conf": ".komodo/NINJA/NINJA.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 8428,
-        "webport": 8429
-    },
-    "KMD": {
-        "daemon": "komodod",
-        "cli": "komodo-cli",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 7770,
-        "rpcport": 7771,
-        "conf": ".komodo/komodo.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 7772,
-        "webport": 7773
-    },
-    "KMD_3P": {
-        "daemon": "komodod",
-        "cli": "komodo-cli",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 8770,
-        "rpcport": 8771,
-        "conf": ".komodo/komodo.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 8772,
-        "webport": 8773
-    },
-    "CLC": {
-        "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=CLC",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 20931,
-        "rpcport": 20932,
-        "conf": ".komodo/CLC/CLC.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 20933,
-        "webport": 20934
-    },
-    "GLEEC": {
-        "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=GLEEC",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 23225,
-        "rpcport": 23226,
-        "conf": ".komodo/GLEEC/GLEEC.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 23227,
-        "webport": 23228
-    },
-    "ILN": {
-        "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=ILN",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 12985,
-        "rpcport": 12986,
-        "conf": ".komodo/ILN/ILN.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 12987,
-        "webport": 12988
-    },
-    "KOIN": {
-        "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=KOIN",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 10701,
-        "rpcport": 10702,
-        "conf": ".komodo/KOIN/KOIN.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 10703,
-        "webport": 10704
-    },
-    "PIRATE": {
-        "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=PIRATE",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 45452,
-        "rpcport": 45453,
-        "conf": ".komodo/PIRATE/PIRATE.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 45454,
-        "webport": 45455
-    },
-    "ZOMBIE": {
-        "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=ZOMBIE",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 56153,
-        "rpcport": 56154,
-        "conf": ".komodo/ZOMBIE/ZOMBIE.conf",
-        "zmqport": 56155,
-        "webport": 56156
-    },
-    "SUPERNET": {
-        "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=SUPERNET",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 11340,
-        "rpcport": 11341,
-        "conf": ".komodo/SUPERNET/SUPERNET.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 11342,
-        "webport": 11343
-    },
-    "THC": {
-        "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=THC",
-        "is_smartchain": true,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 60,
-            "wiftype": 188,
-            "p2shtype": 85
-        },
-        "p2pport": 36789,
-        "rpcport": 36790,
-        "conf": ".komodo/THC/THC.conf",
-        "dpow": {
-            "server": "main",
-            "utxo_value": 0.0001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 10000
-        },
-        "zmqport": 36791,
-        "webport": 36792
-    },
     "DOC": {
         "daemon": "komodod",
         "cli": "komodo-cli -ac_name=DOC",
+        "explorer_branch": "notary-explorer-group-one",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
@@ -294,6 +26,7 @@
     "MARTY": {
         "daemon": "komodod",
         "cli": "komodo-cli -ac_name=MARTY",
+        "explorer_branch": "notary-explorer-group-one",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
@@ -314,9 +47,219 @@
         "zmqport": 52594,
         "webport": 52595
     },
+    "NINJA": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=NINJA",
+        "explorer_branch": "notary-explorer-group-one",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
+        },
+        "p2pport": 8426,
+        "rpcport": 8427,
+        "conf": ".komodo/NINJA/NINJA.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        },
+        "zmqport": 8428,
+        "webport": 8429
+    },
+    "PIRATE": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=PIRATE",
+        "explorer_branch": "notary-explorer-group-one",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
+        },
+        "p2pport": 45452,
+        "rpcport": 45453,
+        "conf": ".komodo/PIRATE/PIRATE.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        },
+        "zmqport": 45454,
+        "webport": 45455
+    },
+    "ZOMBIE": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=ZOMBIE",
+        "explorer_branch": "notary-explorer-group-one",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
+        },
+        "p2pport": 56153,
+        "rpcport": 56154,
+        "conf": ".komodo/ZOMBIE/ZOMBIE.conf",
+        "zmqport": 56155,
+        "webport": 56156
+    },
+    "CCL": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=CCL",
+        "explorer_branch": "notary-explorer-group-two",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
+        },
+        "p2pport": 20848,
+        "rpcport": 20849,
+        "conf": ".komodo/CCL/CCL.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        },
+        "zmqport": 20850,
+        "webport": 20851
+    },
+    "CLC": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=CLC",
+        "explorer_branch": "notary-explorer-group-two",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
+        },
+        "p2pport": 20931,
+        "rpcport": 20932,
+        "conf": ".komodo/CLC/CLC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        },
+        "zmqport": 20933,
+        "webport": 20934
+    },
+    "GLEEC": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=GLEEC",
+        "explorer_branch": "notary-explorer-group-two",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
+        },
+        "p2pport": 23225,
+        "rpcport": 23226,
+        "conf": ".komodo/GLEEC/GLEEC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        },
+        "zmqport": 23227,
+        "webport": 23228
+    },
+    "ILN": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=ILN",
+        "explorer_branch": "notary-explorer-group-two",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
+        },
+        "p2pport": 12985,
+        "rpcport": 12986,
+        "conf": ".komodo/ILN/ILN.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        },
+        "zmqport": 12987,
+        "webport": 12988
+    },
+    "KOIN": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=KOIN",
+        "explorer_branch": "notary-explorer-group-three",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
+        },
+        "p2pport": 10701,
+        "rpcport": 10702,
+        "conf": ".komodo/KOIN/KOIN.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        },
+        "zmqport": 10703,
+        "webport": 10704
+    },
+    "THC": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=THC",
+        "explorer_branch": "notary-explorer-group-three",
+        "is_smartchain": true,
+        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
+        "base58": {
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
+        },
+        "p2pport": 36789,
+        "rpcport": 36790,
+        "conf": ".komodo/THC/THC.conf",
+        "dpow": {
+            "server": "main",
+            "utxo_value": 0.0001,
+            "min_utxo_count": 20,
+            "split_count": 20,
+            "txfee": 10000
+        },
+        "zmqport": 36791,
+        "webport": 36792
+    },
     "CHIPS": {
         "daemon": "chipsd",
         "cli": "chips-cli",
+        "explorer_branch": "notary-explorer-group-three",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
@@ -340,6 +283,7 @@
     "MCL": {
         "daemon": "komodod",
         "cli": "komodo-cli -ac_name=MCL",
+        "explorer_branch": "notary-explorer-group-four",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
@@ -363,6 +307,7 @@
     "TOKEL": {
         "daemon": "tokeld",
         "cli": "tokel-cli",
+        "explorer_branch": "notary-explorer-group-four",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
@@ -386,6 +331,7 @@
     "VRSC": {
         "daemon": "verusd",
         "cli": "verus",
+        "explorer_branch": "notary-explorer-group-four",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
@@ -406,19 +352,20 @@
         "zmqport": 27487,
         "webport": 27488
     },
-    "LTC": {
-        "daemon": "litecoind",
-        "cli": "litecoin-cli",
-        "is_smartchain": false,
+    "SUPERNET": {
+        "daemon": "komodod",
+        "cli": "komodo-cli -ac_name=SUPERNET",
+        "explorer_branch": "notary-explorer-group-five",
+        "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
-            "pubtype": 48,
-            "wiftype": 5,
-            "p2shtype": 176
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
         },
-        "p2pport": 9333,
-        "rpcport": 9334,
-        "conf": ".litecoin/litecoin.conf",
+        "p2pport": 11340,
+        "rpcport": 11341,
+        "conf": ".komodo/SUPERNET/SUPERNET.conf",
         "dpow": {
             "server": "main",
             "utxo_value": 0.0001,
@@ -426,76 +373,31 @@
             "split_count": 20,
             "txfee": 10000
         },
-        "zmqport": 9335,
-        "webport": 9336
+        "zmqport": 11342,
+        "webport": 11343
     },
-    "AYA": {
-        "daemon": "aryacoind",
-        "cli": "aryacoin-cli",
-        "is_smartchain": false,
+    "KMD": {
+        "daemon": "komodod",
+        "cli": "komodo-cli",
+        "explorer_branch": "notary-explorer-group-five",
+        "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
-            "pubtype": 23,
-            "wiftype": 176,
-            "p2shtype": 5
+            "pubtype": 60,
+            "wiftype": 188,
+            "p2shtype": 85
         },
-        "p2pport": 26001,
-        "rpcport": 26002,
-        "conf": ".aryacoin/aryacoin.conf",
+        "p2pport": 7770,
+        "rpcport": 7771,
+        "conf": ".komodo/komodo.conf",
         "dpow": {
-            "server": "3p",
-            "utxo_value": 0.001,
+            "server": "main",
+            "utxo_value": 0.0001,
             "min_utxo_count": 20,
             "split_count": 20,
-            "txfee": 100000
+            "txfee": 10000
         },
-        "zmqport": 26003,
-        "webport": 26004
-    },
-    "EMC2": {
-        "daemon": "einsteiniumd",
-        "cli": "einsteinium-cli",
-        "is_smartchain": false,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 33,
-            "wiftype": 176,
-            "p2shtype": 5
-        },
-        "p2pport": 41878,
-        "rpcport": 41879,
-        "conf": ".einsteinium/einsteinium.conf",
-        "dpow": {
-            "server": "3p",
-            "utxo_value": 0.001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 100000
-        },
-        "zmqport": 41880,
-        "webport": 41881
-    },
-    "MIL": {
-        "daemon": "mild",
-        "cli": "mil-cli",
-        "is_smartchain": false,
-        "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
-        "base58": {
-            "pubtype": 50,
-            "wiftype": 239,
-            "p2shtype": 196
-        },
-        "p2pport": 41888,
-        "rpcport": 41889,
-        "conf": ".mil/mil.conf",
-        "dpow": {
-            "server": "3p",
-            "utxo_value": 0.001,
-            "min_utxo_count": 20,
-            "split_count": 20,
-            "txfee": 100000
-        },
-        "zmqport": 41890,
-        "webport": 41891
+        "zmqport": 7772,
+        "webport": 7773
     }
 }
