@@ -57,9 +57,8 @@ ARG RPC_PASS=${RPC_PASS}
 ARG ZMQ_PORT=${ZMQ_PORT}
 ARG WEB_PORT=${WEB_PORT}
 ARG WEB_PORT=${WEB_PORT}
-ARG EXPLORER_BRANCH=${EXPLORER_BRANCH}
 
-RUN git clone https://github.com/smk762/komodo-install-explorer -b ${EXPLORER_BRANCH} && \
+RUN git clone https://github.com/smk762/komodo-install-explorer -b notary-explorer-groups && \
      echo "TICKER=${TICKER}" > /home/komodian/komodo-install-explorer/.env && \
      echo "TICKER_IP=${TICKER_IP}" >> /home/komodian/komodo-install-explorer/.env && \
      echo "CONF_PATH=${CONF_PATH}" >> /home/komodian/komodo-install-explorer/.env && \
@@ -68,8 +67,7 @@ RUN git clone https://github.com/smk762/komodo-install-explorer -b ${EXPLORER_BR
      echo "RPC_USER=${RPC_USER}" >> /home/komodian/komodo-install-explorer/.env && \
      echo "RPC_PASS=${RPC_PASS}" >> /home/komodian/komodo-install-explorer/.env && \
      echo "ZMQ_PORT=${ZMQ_PORT}" >> /home/komodian/komodo-install-explorer/.env && \
-     echo "WEB_PORT=${WEB_PORT}" >> /home/komodian/komodo-install-explorer/.env  && \
-     echo "EXPLORER_BRANCH=${EXPLORER_BRANCH}" >> /home/komodian/komodo-install-explorer/.env 
+     echo "WEB_PORT=${WEB_PORT}" >> /home/komodian/komodo-install-explorer/.env
 
 RUN cd komodo-install-explorer && ls -al && pip3 install --upgrade pip && \
      pip3 install --upgrade -r requirements.txt && \

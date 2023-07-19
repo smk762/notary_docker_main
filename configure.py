@@ -154,7 +154,6 @@ def get_daemon_yaml(coin: str) -> None:
 def get_explorer_yaml(coin: str) -> None:
     conf_file = helper.get_conf(coin, False)
     rpcuser, rpcpass = helper.get_rpc_creds(conf_file)
-    explorer_branch = COINS_DATA[coin]["explorer_branch"]
     p2pport = COINS_DATA[coin]["p2pport"]
     rpcport = p2pport + 1
     zmqport = p2pport + 2
@@ -173,7 +172,6 @@ def get_explorer_yaml(coin: str) -> None:
     yaml.append(f'      - RPC_USER="{rpcuser}"\n')
     yaml.append(f'      - ZMQ_PORT={zmqport}\n')
     yaml.append(f'      - WEB_PORT={webport}\n')
-    yaml.append(f'      - EXPLORER_BRANCH={explorer_branch}\n')
     yaml.append('    depends_on:\n')
     yaml.append(f'      - {coin.lower()}\n')
     yaml.append('    build:\n')
@@ -191,7 +189,6 @@ def get_explorer_yaml(coin: str) -> None:
     yaml.append(f'        - RPC_PORT={rpcport}\n')
     yaml.append(f'        - ZMQ_PORT={zmqport}\n')
     yaml.append(f'        - WEB_PORT={webport}\n')
-    yaml.append(f'        - EXPLORER_BRANCH={explorer_branch}\n')
     yaml.append('    ports:\n')
     yaml.append(f'      - "127.0.0.1:{webport}:{webport}"\n')
     yaml.append('    volumes:\n')
