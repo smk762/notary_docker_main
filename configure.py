@@ -244,7 +244,7 @@ def nginx_conf(coin, subdomain, webroot="html", proxy_host="127.0.0.1"):
                 line = line.replace("SUBDOMAIN", subdomain)
                 if "PROXY_HOST" in line:
                     for ipaddr in mirrors:
-                        mirror_txt = f"    server {ipaddr}:{webport};"
+                        mirror_txt = f"    server {ipaddr}:{webport} max_fails=1 fail_timeout=2s;"
                         w.write(f"{mirror_txt}\n")
                 line = line.replace("PROXY_HOST", proxy_host)
                 line = line.replace("EXPLORER_PORT", str(webport))
