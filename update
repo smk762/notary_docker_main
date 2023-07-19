@@ -22,6 +22,37 @@ USER_ID=$(id -u)
 GROUP_ID=$(id -g)
 echo "USER_ID=${USER_ID}" > .env
 echo "GROUP_ID=${GROUP_ID}" >> .env
+echo ""
+echo "Which group of coins should be built?"
+group_one="[DOC, MARTY, NINJA, PIRATE, ZOMBIE]"
+echo "1. ${group_one}"
+group_two="[CCL, CLC, GLEEC, ILN, KOIN]"
+echo "2. ${group_two}"
+group_three="[THC, MCL, TOKEL, VRSC]"
+echo "3. ${group_three}"
+group_four="[SUPERNET, KMD, CHIPS]"
+echo "4. ${group_four}"
+echo ""
+read -p "Enter your choice: " group
+
+case "$group" in
+"1")
+    echo "${group_one}" > docker_coins.json
+    ;;
+"2")
+    echo "${group_two}" > docker_coins.json
+    ;;
+"3")
+    echo "${group_three}" > docker_coins.json
+    ;;
+"4")
+    echo "${group_four}" > docker_coins.json
+    ;;
+*)
+    echo "Invalid choice, exiting"
+    exit
+    ;;
+esac
 
 # Update repo
 echo "Updating repository..."

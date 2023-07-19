@@ -211,7 +211,7 @@
     "KOIN": {
         "daemon": "komodod",
         "cli": "komodo-cli -ac_name=KOIN",
-        "explorer_branch": "notary-explorer-group-three",
+        "explorer_branch": "notary-explorer-group-two",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
@@ -283,7 +283,7 @@
     "MCL": {
         "daemon": "komodod",
         "cli": "komodo-cli -ac_name=MCL",
-        "explorer_branch": "notary-explorer-group-four",
+        "explorer_branch": "notary-explorer-group-three",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
@@ -307,7 +307,7 @@
     "TOKEL": {
         "daemon": "tokeld",
         "cli": "tokel-cli",
-        "explorer_branch": "notary-explorer-group-four",
+        "explorer_branch": "notary-explorer-group-three",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
@@ -355,7 +355,7 @@
     "SUPERNET": {
         "daemon": "komodod",
         "cli": "komodo-cli -ac_name=SUPERNET",
-        "explorer_branch": "notary-explorer-group-five",
+        "explorer_branch": "notary-explorer-group-four",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
@@ -379,7 +379,7 @@
     "KMD": {
         "daemon": "komodod",
         "cli": "komodo-cli",
-        "explorer_branch": "notary-explorer-group-five",
+        "explorer_branch": "notary-explorer-group-four",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
         "base58": {
