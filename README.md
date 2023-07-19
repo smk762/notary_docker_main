@@ -117,6 +117,21 @@ Make sure you are not running any other instances of the daemon on your host mac
 Ideally each group is run on more than one server to avoid a central point of failure. Then we can setup a load balancing nginx config like the example in [templates/nginx_loadbalancing.example](templates/nginx_loadbalancing.example).
 
 To further secure the upstream servers, use a rule like below on each daemon/explorer server to restrict access to the explorer port to only the load balancer IP address:
+
 ```
-sudo ufw allow from 123.58.13.21 to any port 62418 comment 'doc explorer load balancer'
+ip="123.58.13.21"
+sudo ufw allow from ${ip} to any port 62418 comment 'doc explorer load balancer'
+sudo ufw allow from ${ip} to any port 52595 comment 'marty explorer load balancer'
+sudo ufw allow from ${ip} to any port 56156 comment 'zombie explorer load balancer'
+sudo ufw allow from ${ip} to any port 45455 comment 'pirate explorer load balancer'
+sudo ufw allow from ${ip} to any port 8429 comment 'ninja explorer load balancer'
 ```
+
+To simplify this, you can create a file in the project root folder called `mirrors.json` with a list of IPs like:
+```
+[
+    "123.58.13.21",
+    "34.55.89.144"
+]
+```
+Which will open the explorer ports for the listed IP addresses, and also add the IP addresses to the nginx `upstream` config.

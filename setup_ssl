@@ -26,7 +26,6 @@ read -p "Once these are setup, press enter to continue"
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 LETSENCRYPT_VOLUME_DIR=$DIR/letsencrypt
-EMAIL="my-email@gmail.com"
 read -p "Enter your email for renewal reminders: " EMAIL
 
 for i in "${coins[@]}"; do
@@ -42,6 +41,17 @@ for i in "${coins[@]}"; do
         echo "SSL certificate [/etc/letsencrypt/live/${subdomain}/fullchain.pem] not found. Please check if the domain name [${subdomain}] is correct and if the certificate was created."
     fi
 done
+
+if [ -f "mirrors.json" ]; then
+    mirrors=($(jq -r .[] mirrors.json))
+    for ip in "${mirrors[@]}"; do
+        for coin in "${coins[@]}"; do
+            port=$(jq -r .${coin} coins_data.json | jq -r .webport)
+            sudo ufw allow from ${ip} to any port ${port} comment "${coin} explorer load balancer"
+        done        
+    done
+fi
+
 
 echo "Restarting nginx (needs sudo)"
 sudo systemctl restart nginx

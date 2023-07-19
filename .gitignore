@@ -1,6 +1,7 @@
 .env
 docker-compose.yml
 pubkey.txt
+mirrors.json
 pubkey_3p.txt
 
 # Byte-compiled / optimized / DLL files

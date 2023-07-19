@@ -228,6 +228,11 @@ def create_compose_yaml(with_explorers=True) -> None:
 
 
 def nginx_conf(coin, subdomain, webroot="html", proxy_host="127.0.0.1"):
+    if os.path.exists(f"{SCRIPT_PATH}/mirrors.json"):
+        with open(f"{SCRIPT_PATH}/mirrors.json", "r") as f:
+            mirrors = json.load(f)
+    else:
+        mirrors = []
     blockname = f"{SCRIPT_PATH}/nginx/{coin}-explorer.serverblock"
     webport = COINS_DATA[coin.upper()]["p2pport"] + 3
     with open(f"{SCRIPT_PATH}/templates/nginx_serverblock.template", "r") as r:
@@ -237,6 +242,10 @@ def nginx_conf(coin, subdomain, webroot="html", proxy_host="127.0.0.1"):
                 line = line.replace("HOMEDIR", HOME)
                 line = line.replace("WEBROOT", webroot)
                 line = line.replace("SUBDOMAIN", subdomain)
+                if "PROXY_HOST" in line:
+                    for ipaddr in mirrors:
+                        mirror_txt = f"    server {ipaddr}:{webport};"
+                        w.write(f"{mirror_txt}")
                 line = line.replace("PROXY_HOST", proxy_host)
                 line = line.replace("EXPLORER_PORT", str(webport))
                 w.write(f"{line}")
