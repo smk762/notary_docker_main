@@ -15,7 +15,7 @@ map $limit $limit_key {
 limit_req_zone $binary_remote_addr zone=COIN_api:10m rate=1r/s;
 
 upstream COIN-explorer {
-    server PROXY_HOST:EXPLORER_PORT max_fails=1 fail_timeout=2s;;
+    server PROXY_HOST:EXPLORER_PORT max_fails=1 fail_timeout=2s;
     zone upstreams 64K;
     keepalive 4;
 }
