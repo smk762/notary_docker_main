@@ -112,3 +112,11 @@ Error response from daemon: driver failed programming external connectivity on e
 Make sure you are not running any other instances of the daemon on your host machine. Stop the deamons, and then run `docker compose up -d` again.
 
 
+#### Load Balancing
+
+Ideally each group is run on more than one server to avoid a central point of failure. Then we can setup a load balancing nginx config like the example in [templates/nginx_loadbalancing.example](templates/nginx_loadbalancing.example).
+
+To further secure the upstream servers, use a rule like below on each daemon/explorer server to restrict access to the explorer port to only the load balancer IP address:
+```
+sudo ufw allow from 123.58.13.21 to any port 62418 comment 'doc explorer load balancer'
+```

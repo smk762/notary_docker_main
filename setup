@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo apt install libpython3-dev libnss3 libnss3-dev python3-pycurl libcurl4-openssl-dev libssl-dev -y
+
 pip3 install -r requirements.txt
 
 mkdir -p /home/${USER}/.zcash-params
