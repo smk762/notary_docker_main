@@ -3,6 +3,7 @@ docker-compose.yml
 pubkey.txt
 mirrors.json
 pubkey_3p.txt
+docker_coins.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
