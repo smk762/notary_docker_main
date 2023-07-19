@@ -219,6 +219,14 @@ def create_cli_wrapper(coin: str) -> None:
         os.chmod(wrapper, 0o755)
 
 
+def create_service_cli_array() -> None:
+    shutil.copy('templates/service_cli.template', 'service_cli')
+    with open('service_cli', 'a+') as conf:
+        for coin in DOCKER_COINS:
+            print(f'Adding {coin} to service_cli')
+            conf.write(f'service_cli["{coin.lower()}"]="{coin.lower()}-cli"\n')
+
+
 def create_compose_yaml(with_explorers=True) -> None:
     shutil.copy('templates/docker-compose.template', 'docker-compose.yml')
     with open('docker-compose.yml', 'a+') as conf:
@@ -276,6 +284,7 @@ if __name__ == '__main__':
         print('No arguments given, exiting.')
     elif sys.argv[1] == 'clis':
         create_cli_wrappers()
+        create_service_cli_array()
     elif sys.argv[1] == 'daemon_confs':
         create_daemon_confss()
     elif sys.argv[1] == 'launch_files':
