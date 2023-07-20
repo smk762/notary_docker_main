@@ -1,4 +1,4 @@
-FROM smk762/komodo:9fc8afd
+FROM smk762/komodo:dd59e56ac
 LABEL maintainer="smk@komodoplatform.com"
 
 # Setup up user and working directory
