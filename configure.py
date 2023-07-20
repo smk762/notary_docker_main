@@ -98,17 +98,18 @@ def create_daemon_confs(coin: str, txindex: int=1, addressindex: int=0, spentind
         # Defines the RPC port. This port should be protected from the public with a firewall.
         conf.write(f'rpcport={rpcport}\n')
         # Adds a few notaries as peers to the daemons
-        for k, v in DAEMON_PEERS.items():
-            conf.write(f'addnode={v} # {k}\n')            
-        # For Antara smartchains and Komodo forks, an address whitelist is available to restrict 
-        # recieving funds to a specific set of addresses. This mitigates spam attacks.
-        if helper.is_smartchain(coin):
-            for k, v in ADDRESS_WHITELIST.items():
-                address = get_addr_from_pubkey(pubkey, coin)
-                if address != "":
-                    conf.write(f'whitelistaddress={v} # {k}\n')
-            conf.write(f'whitelistaddress={address} # User KMD address\n')
-            print(f"PLEASE MANUALLY ADD ANY ADDITIONAL {coin} WHITELIST ADDRESSES TO `const.py`!")
+        if coin not in ["ZOMBIE"]:
+            for k, v in DAEMON_PEERS.items():
+                conf.write(f'addnode={v} # {k}\n')            
+            # For Antara smartchains and Komodo forks, an address whitelist is available to restrict 
+            # recieving funds to a specific set of addresses. This mitigates spam attacks.
+            if helper.is_smartchain(coin):
+                for k, v in ADDRESS_WHITELIST.items():
+                    address = get_addr_from_pubkey(pubkey, coin)
+                    if address != "":
+                        conf.write(f'whitelistaddress={v} # {k}\n')
+                conf.write(f'whitelistaddress={address} # User KMD address\n')
+                print(f"PLEASE MANUALLY ADD ANY ADDITIONAL {coin} WHITELIST ADDRESSES TO `const.py`!")
 
 
 def get_daemon_yaml(coin: str) -> None:

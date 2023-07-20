@@ -61,7 +61,7 @@ def get_launch_params(coin, is_notary=IS_NOTARY):
         launch += " -daemon"
     elif coin in LAUNCH_PARAMS:
         launch += f" {LAUNCH_PARAMS[coin]}"
-    if coin in ["RICK", "MORTY", "DOC", "ZOMBIE", "MARTY"]:
+    if coin in ["RICK", "MORTY", "DOC", "MARTY"]:
         launch += f" -gen -genproclimit=1"
     launch += f" -pubkey={get_pubkey(coin)}"
     return launch
