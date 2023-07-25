@@ -282,7 +282,7 @@
     },
     "MCL": {
         "daemon": "komodod",
-        "cli": "mcl-cli",
+        "cli": "mcl-cli -ac_name=MCL",
         "explorer_branch": "notary-explorer-group-three",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
