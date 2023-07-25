@@ -31,7 +31,7 @@ if [ ! -f "docker_coins.json" ]; then
     echo "1. ${group_one}"
     group_two='["CCL", "CLC", "GLEEC", "ILN", "KOIN"]'
     echo "2. ${group_two}"
-    group_three='["THC", "MCL", 'TOKEL', "VRSC"]'
+    group_three='["THC", "MCL", "TOKEL", "VRSC"]'
     echo "3. ${group_three}"
     group_four='["SUPERNET", "KMD", "CHIPS"]'
     echo "4. ${group_four}"
