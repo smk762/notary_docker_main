@@ -1,9 +1,0 @@
-# Declare the associative array
-declare -A service_cli
-# TODO: Generate this via configure.py
-# Assign values to the array
-service_cli["pirate"]="pirate-cli"
-service_cli["doc"]="doc-cli"
-service_cli["marty"]="marty-cli"
-service_cli["ninja"]="ninja-cli"
-service_cli["zombie"]="zombie-cli"
