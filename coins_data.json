@@ -282,7 +282,7 @@
     },
     "MCL": {
         "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=MCL",
+        "cli": "mcl-cli",
         "explorer_branch": "notary-explorer-group-three",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
@@ -330,7 +330,7 @@
     },
     "VRSC": {
         "daemon": "verusd",
-        "cli": "verus",
+        "cli": "verus-cli",
         "explorer_branch": "notary-explorer-group-four",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
