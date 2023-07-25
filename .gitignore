@@ -4,6 +4,7 @@ pubkey.txt
 mirrors.json
 pubkey_3p.txt
 docker_coins.json
+service-cli
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
