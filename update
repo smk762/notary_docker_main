@@ -2,6 +2,10 @@
 
 script_path=$(dirname $(realpath $0))
 
+# Update repo
+echo "Updating repository..."
+git pull || sleep 5 # This sleep is for letting the user see errors when git pull fails
+
 # Check branch to match with insight submodule
 branch=$(git branch --show-current)
 
@@ -58,9 +62,6 @@ if [ ! -f "docker_coins.json" ]; then
     esac
 fi
 
-# Update repo
-echo "Updating repository..."
-git pull || sleep 5 # This sleep is for letting the user see errors when git pull fails
 
 # Creating launch files for daemons and explorers
 echo "Setting up launch files..."
