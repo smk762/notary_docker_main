@@ -97,10 +97,6 @@ def get_rpcport(coin: str) -> str:
 
 def get_conf(coin, container=True):
     conf = COINS_DATA[coin]["conf"]
-    if not container:
-        if coin in ["MCL", "VRSC", "TOKEL", "KMD_3P"]:
-            conf.replace(".komodo", ".komodo_3p")
-        return f"{HOME}/{conf}"
     return  f"/home/komodian/{conf}"
 
 
