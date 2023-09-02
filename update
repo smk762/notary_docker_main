@@ -49,12 +49,14 @@ else
     ./stop $1
 fi
 
-sudo ln -sf ${script_path}/cli_wrappers/komodo-cli /usr/local/bin/komodo-cli
-sudo ln -sf ${script_path}/cli_wrappers/litecoin-cli /usr/local/bin/litecoin-cli
+ln -sf ${script_path}/cli_wrappers/komodo-cli /home/$USER/.local/bin/komodo-cli
+ln -sf ${script_path}/cli_wrappers/komodo-cli /home/$USER/.local/bin/kmd-cli
+ln -sf ${script_path}/cli_wrappers/litecoin-cli /home/$USER/.local/bin/litecoin-cli
+ln -sf ${script_path}/cli_wrappers/litecoin-cli /home/$USER/.local/bin/ltc-cli
 
 ./listassetchains | while read coin; do
     coin=$(echo $coin | awk '{print tolower($0)}')
-    sudo ln -sf ${script_path}/cli_wrappers/${coin}-cli /usr/local/bin/${coin}-cli
+    ln -sf ${script_path}/cli_wrappers/${coin}-cli /home/$USER/.local/bin/${coin}-cli
 done
 
 echo "Done! Use ./start to launch your daemons..."

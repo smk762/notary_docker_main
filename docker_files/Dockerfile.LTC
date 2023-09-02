@@ -23,9 +23,9 @@ RUN /build_ltc.sh "${COMMIT_HASH}"
 
 # Move binaries
 RUN cp /home/komodian/litecoin/src/litecoin-cli /home/komodian/litecoin-cli
-RUN mv /home/komodian/litecoin/src/litecoin-cli /usr/local/bin/litecoin-cli
-RUN mv /home/komodian/litecoin/src/litecoind /usr/local/bin/litecoind
-RUN PATH=/usr/local/bin/:$PATH
+RUN mv /home/komodian/litecoin/src/litecoin-cli /home/$USER/.local/bin/litecoin-cli
+RUN mv /home/komodian/litecoin/src/litecoind /home/$USER/.local/bin/litecoind
+RUN PATH=/home/$USER/.local/bin/:$PATH
 
 # Cleanup
 RUN rm -rf /home/komodian/litecoin
