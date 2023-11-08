@@ -68,7 +68,7 @@ komodo-cli -ac_name=DOC getinfo
 After building the main docker images, the cli binary for `komodod` will be located in the `~/.komodo` folder. Lets create a symbolic link for it:
 ```bash
 # KMD
-sudo ln -s /home/${USER}/.komodo/komodo-cli /usr/local/bin/komodo-cli
+sudo ln -s /home/${USER}/.komodo/komodo-cli /home/$USER/.local/bin/komodo-cli
 ```
 
 ### Optional: Create wrappers and symbolic links for all the other main coins
@@ -81,7 +81,7 @@ Though you can just use the `komodo-cli` binary as you normally would, if you pr
     komodo-cli -ac_name=DOC $@
     ```
 - Save and exit, then make executable with `chmod +x ~/.komodo/doc-cli`
-- Create a symbolic link with `sudo ln -s /home/${USER}/.komodo/doc-cli /usr/local/bin/doc-cli`
+- Create a symbolic link with `sudo ln -s /home/${USER}/.komodo/doc-cli /home/$USER/.local/bin/doc-cli`
 - Rinse and repeat for all other smart chains on the main server.
 
 Alternatively, run the `./setup_clis.sh` script **after** installing the daemons to create the wrappers and symbolic links for you.
