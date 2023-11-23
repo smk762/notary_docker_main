@@ -1,6 +1,6 @@
 [submodule "komodo-install-explorer"]
 	path = komodo-install-explorer
 	url = https://github.com/smk762/komodo-install-explorer
-	branch = notary-explorer-group-one
+	branch = notary-explorer-groups
 [submodule "submodule.komodo-install-explorer"]
 	branch = notary-explorer-group-one
