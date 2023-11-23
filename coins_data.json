@@ -282,7 +282,7 @@
     },
     "MCL": {
         "daemon": "komodod",
-        "cli": "komodo-cli -ac_name=MCL",
+        "cli": "mcl-cli -ac_name=MCL",
         "explorer_branch": "notary-explorer-group-three",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
@@ -293,7 +293,7 @@
         },
         "p2pport": 33824,
         "rpcport": 33825,
-        "conf": ".komodo_3p/MCL/MCL.conf",
+        "conf": ".komodo/MCL/MCL.conf",
         "dpow": {
             "server": "3p",
             "utxo_value": 0.0001,
@@ -317,7 +317,7 @@
         },
         "p2pport": 29404,
         "rpcport": 29405,
-        "conf": ".komodo_3p/TOKEL/TOKEL.conf",
+        "conf": ".komodo/TOKEL/TOKEL.conf",
         "dpow": {
             "server": "3p",
             "utxo_value": 0.0001,
@@ -330,7 +330,7 @@
     },
     "VRSC": {
         "daemon": "verusd",
-        "cli": "verus",
+        "cli": "verus-cli",
         "explorer_branch": "notary-explorer-group-four",
         "is_smartchain": true,
         "pubkey": "02903ec85838114ac19c5a19825402e49e1dcdb7f576f811c0e1936096b4206b1f",
@@ -341,7 +341,7 @@
         },
         "p2pport": 27485,
         "rpcport": 27486,
-        "conf": ".komodo_3p/VRSC/VRSC.conf",
+        "conf": ".komodo/VRSC/VRSC.conf",
         "dpow": {
             "server": "3p",
             "utxo_value": 0.0001,

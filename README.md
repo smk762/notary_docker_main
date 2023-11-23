@@ -35,7 +35,7 @@ sudo systemctl restart docker
 ---
 ## Setup
 
-1. Clone this repository: `git clone https://github.com/smk762/notary_docker_main -b notary-explorer-groups --recurse-submodule` 
+1. Clone this repository: `git clone https://github.com/smk762/notary_docker_main -b notary-explorer-groups` 
 2. Run `./setup` to install the zcash-params and pip dependencies.
 3. Run `./update` to:
     - Set the coins group to be built

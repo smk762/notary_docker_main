@@ -160,7 +160,6 @@ insight_explorers = {
     'GLEEC': 'https://gleec.explorer.dexstats.info/',
     'ILN': 'https://iln.explorer.dexstats.info/',
     'KMD': 'https://kmd.explorer.dexstats.info/',
-    'KMD_3P': 'https://kmd.explorer.dexstats.info/',
     'KOIN': 'https://koin.explorer.dexstats.info/',
     'LTC': '',
     'MARTY': '',

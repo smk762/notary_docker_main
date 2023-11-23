@@ -52,8 +52,8 @@ def get_daemon(coin):
 def get_launch_params(coin, is_notary=IS_NOTARY):
     launch = get_daemon(coin)
     if coin == 'MCL':
-        launch += " -ac_name=MCL -ac_supply=2000000 -ac_cc=2 -addnode=5.189.149.242 -addnode=161.97.146.150 -addnode=149.202.158.145 -addressindex=1 -spentindex=1 -ac_marmara=1 -ac_staked=75 -ac_reward=3000000000"
-    if is_notary and coin in ["KMD", "KMD_3P"]:
+        launch += " -ac_name=MCL -ac_supply=2000000 -ac_cc=2 -addnode=5.189.149.242 -addnode=161.97.146.150 -addnode=149.202.158.145 -addressindex=1 -spentindex=1 -ac_marmara=1 -ac_staked=75 -ac_reward=3000000000 -daemon"
+    elif is_notary and coin in ["KMD", "KMD_3P"]:
         if coin == 'KMD':
             launch += " -gen -genproclimit=1 -minrelaytxfee=0.000035 -opretmintxfee=0.004 -notary=.litecoin/litecoin.conf"
         elif coin == 'KMD_3P':
@@ -97,10 +97,6 @@ def get_rpcport(coin: str) -> str:
 
 def get_conf(coin, container=True):
     conf = COINS_DATA[coin]["conf"]
-    if not container:
-        if coin in ["MCL", "VRSC", "TOKEL", "KMD_3P"]:
-            conf.replace(".komodo", ".komodo_3p")
-        return f"{HOME}/{conf}"
     return  f"/home/komodian/{conf}"
 
 
