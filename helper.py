@@ -53,6 +53,8 @@ def get_launch_params(coin, is_notary=IS_NOTARY):
     launch = get_daemon(coin)
     if coin == 'MCL':
         launch += " -ac_name=MCL -ac_supply=2000000 -ac_cc=2 -addnode=5.189.149.242 -addnode=161.97.146.150 -addnode=149.202.158.145 -addressindex=1 -spentindex=1 -ac_marmara=1 -ac_staked=75 -ac_reward=3000000000 -daemon"
+    if coin == 'ZOMBIE':
+        launch += " -ac_name=ZOMBIE -ac_supply=0 -ac_reward=25600000000 -ac_halving=388885 -ac_private=1 -ac_sapling=1 -testnode=1 -addnode=65.21.51.116 -addnode=116.203.120.163 -addnode=168.119.236.239 -addnode=65.109.1.121 -addnode=159.69.125.84"
     elif is_notary and coin in ["KMD", "KMD_3P"]:
         if coin == 'KMD':
             launch += " -gen -genproclimit=1 -minrelaytxfee=0.000035 -opretmintxfee=0.004 -notary=.litecoin/litecoin.conf"
