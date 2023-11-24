@@ -63,7 +63,9 @@ def get_launch_params(coin, is_notary=IS_NOTARY):
         launch += " -daemon"
     elif coin in LAUNCH_PARAMS:
         launch += f" {LAUNCH_PARAMS[coin]}"
-    if coin in ["RICK", "MORTY", "DOC", "MARTY", "ZOMBIE"]:
+    if coin in ["ZOMBIE"]:
+        pass
+    elif coin in ["RICK", "MORTY", "DOC", "MARTY"]:
         launch += f" -gen -genproclimit=1 -pubkey=022d7424c741213a2b9b49aebdaa10e84419e642a8db0a09e359a3d4c850834846" # faucet.komodo.earth pubkey
     else:
         launch += f" -pubkey={get_pubkey(coin)}"
