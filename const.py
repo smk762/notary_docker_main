@@ -32,13 +32,6 @@ for k, v in COINS_DATA.items():
 json.dump(COINS_DATA, open(os.path.join(SCRIPT_PATH, "coins_data.json"), "w"), indent=4)
     
 
-# Whitelist of addresses that can send funds. This is used to mitigate spamming.
-ADDRESS_WHITELIST = {
-    "s6_dragonhound_DEV_main": "RDragoNHdwovvsDLSLMiAEzEArAD3kq6FN",
-    "s6_dragonhound_DEV_3p": "RLdmqsXEor84FC8wqDAZbkmJLpgf2nUSkq",
-    "s7_dragonhound_DEV_main": "RHi882Amab35uXjqBZjVxgEgmkkMu454KK",
-    "s7_dragonhound_DEV_3p": "RHound8PpyhVLfi56dC7MK3ZvvkAmB3bvQ"
-}
 
 # Adds a few notaries as peers to the daemons
 DAEMON_PEERS = {
@@ -60,4 +53,5 @@ DAEMON_PEERS = {
 commit_hashes_url = "https://raw.githubusercontent.com/KomodoPlatform/dPoW/master/doc/daemon_versions.json"
 COMMIT_HASHES = requests.get(commit_hashes_url).json()
 with open(os.path.join(SCRIPT_PATH, "daemon_versions.json"), "w") as f:
+    COMMIT_HASHES.update({"ZOMBIE": "6da03ef"})
     json.dump(COMMIT_HASHES, f, indent=4)

@@ -8,7 +8,7 @@ import os
 import helper
 from const import HOME, SCRIPT_PATH, COINS_DATA, LAUNCH_PARAMS, \
                 COINS_DATA, DOCKER_COINS, IS_INSIGHT_EXPLORER, \
-                ADDRESS_WHITELIST, DAEMON_PEERS, IS_NOTARY
+                DAEMON_PEERS, IS_NOTARY
 from based_58 import get_addr_from_pubkey
 
 
@@ -100,16 +100,7 @@ def create_daemon_confs(coin: str, txindex: int=1, addressindex: int=0, spentind
         # Adds a few notaries as peers to the daemons
         if coin not in ["ZOMBIE"]:
             for k, v in DAEMON_PEERS.items():
-                conf.write(f'addnode={v} # {k}\n')            
-            # For Antara smartchains and Komodo forks, an address whitelist is available to restrict 
-            # recieving funds to a specific set of addresses. This mitigates spam attacks.
-            if helper.is_smartchain(coin):
-                for k, v in ADDRESS_WHITELIST.items():
-                    address = get_addr_from_pubkey(pubkey, coin)
-                    if address != "":
-                        conf.write(f'whitelistaddress={v} # {k}\n')
-                conf.write(f'whitelistaddress={address} # User KMD address\n')
-                print(f"PLEASE MANUALLY ADD ANY ADDITIONAL {coin} WHITELIST ADDRESSES TO `const.py`!")
+                conf.write(f'addnode={v} # {k}\n')
 
 
 def get_daemon_yaml(coin: str) -> None:
