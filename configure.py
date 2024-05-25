@@ -46,21 +46,6 @@ coins_main = {
         "p2pport": 12985,
         "rpcport": 12986
     },
-    "KIP0002": {
-        "daemon": "komodod",     
-        "p2pport": 58225,
-        "rpcport": 58226
-    },
-    "KIP0003": {
-        "daemon": "komodod",
-        "p2pport": 48530,
-        "rpcport": 48531
-    },
-    "KIP0004": {
-        "daemon": "komodod",
-        "p2pport": 58225,
-        "rpcport": 58226
-    },
     "VOTE2024": {
         "daemon": "komodod",
         "p2pport": 60915,
