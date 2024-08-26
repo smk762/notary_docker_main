@@ -38,8 +38,8 @@ coins_main = {
     },
     "GLEEC": {
         "daemon": "komodod",
-        "p2pport": 23225,
-        "rpcport": 23226
+        "p2pport": 23344,
+        "rpcport": 23345
     },
     "ILN": {
         "daemon": "komodod",

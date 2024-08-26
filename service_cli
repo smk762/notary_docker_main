@@ -3,9 +3,6 @@ declare -A service_cli
 
 # Assign values to the array
 service_cli["iln"]="iln-cli"
-service_cli["kip0002"]="kip0002-cli"
-service_cli["kip0003"]="kip0003-cli"
-service_cli["kip0004"]="kip0004-cli"
 service_cli["vote2024"]="vote2024-cli"
 service_cli["gleec"]="gleec-cli"
 service_cli["litecoin"]="litecoin-cli"
