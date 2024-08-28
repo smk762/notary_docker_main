@@ -46,11 +46,6 @@ coins_main = {
         "p2pport": 12985,
         "rpcport": 12986
     },
-    "VOTE2024": {
-        "daemon": "komodod",
-        "p2pport": 60915,
-        "rpcport": 60916   
-    },
     "NINJA": {
         "daemon": "komodod",
         "p2pport": 8426,
