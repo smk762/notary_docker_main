@@ -142,6 +142,14 @@ def generate_rpc_pass(length=24):
     rpc_chars = string.ascii_letters + string.digits + special_chars
     return "".join(secrets.choice(rpc_chars) for _ in range(length))
 
+def get_nn_kmd_addresses(season='Season_7', server='Third_Party', coin='KMD'):
+    url = f"https://stats.kmd.io/api/table/addresses/?season={season}&server={server}&coin={coin}"
+    try:
+        data = requests.get(url).json()
+        return {i["notary"]: i["address"] for i in data["results"]}
+    except Exception as e:
+        print(f"Error: {e}")
+    return {}
 
 def get_pubkey_address(coin: str, pubkey: str) -> str:
     url = "https://stats.kmd.io/api/tools/address_from_pubkey/"
@@ -324,7 +332,18 @@ def create_launch_files():
             os.chmod(launch_file, 0o755)
 
 
+def get_season():
+    url = "https://stats.kmd.io/api/info/notary_season/"
+    try:
+        data = requests.get(url).json()
+        return data["results"]
+    except Exception as e:
+        print(f"Error: {e}")
+    return "Season_7"
+
+
 def create_confs(server="3p", coins_list=None):
+    season = get_season()
     if server == "3p":
         data = coins_3p
         rpcip = "0.0.0.0"
@@ -377,17 +396,15 @@ def create_confs(server="3p", coins_list=None):
             conf.write('addnode=65.21.77.109 # Alright_EU\n')
             conf.write('addnode=89.19.26.211 # Marmara1\n')
             conf.write('addnode=89.19.26.212 # Marmara2\n')
+            main_kmd_addresses = get_nn_kmd_addresses(season, 'Main', 'KMD')
+            third_party_kmd_addresses = get_nn_kmd_addresses(season, 'Third_Party', 'KMD')
             if coin in ["MCL", "VRSC", "TOKEL", "KMD_3P"] or (coin in coins_main and coin not in ["LTC", "PIRATE"]):
-                conf.write('whitelistaddress=RDragoNHdwovvsDLSLMiAEzEArAD3kq6FN # s6_dragonhound_DEV_main\n')
-                conf.write('whitelistaddress=RLdmqsXEor84FC8wqDAZbkmJLpgf2nUSkq # s6_dragonhound_DEV_3p\n')
-                conf.write('whitelistaddress=RHi882Amab35uXjqBZjVxgEgmkkMu454KK # s7_dragonhound_DEV_main\n')
-                conf.write('whitelistaddress=RHound8PpyhVLfi56dC7MK3ZvvkAmB3bvQ # s7_dragonhound_DEV_3p\n')
+                # Whitelists all NN addresses and NN faucet address
                 conf.write('whitelistaddress=RSzqu1ZmAbbM2WUNdqNtPLTcLB54kwLp6D # Notary Faucet\n')
-                # Adds user main & 3p addresses for this node to whitelist
-                for server in ["3p", "main"]:
-                    address = get_pubkey_address("KMD", get_user_pubkey(server))
-                    if address != "":
-                        conf.write(f'whitelistaddress={address} # User {server} KMD address\n')
+                for k,v in main_kmd_addresses.items():
+                    conf.write(f'whitelistaddress={v} # {k} KMD address ({season})\n')
+                for k,v in third_party_kmd_addresses.items():
+                    conf.write(f'whitelistaddress={v} # {k} 3P KMD address ({season})\n')
                 print(f"PLEASE MANUALLY ADD ANY ADDITIONAL WHITELIST ADDRESSES TO {conf_file}!")
         # create debug.log files if not existing
         debug_file = get_debug_file(coin, False)
