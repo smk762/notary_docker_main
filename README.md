@@ -8,6 +8,7 @@ Simple setup for running Main notary node daemons for dPoW.
  - [Docker Compose](https://docs.docker.com/compose/install/linux/#install-using-the-repository)
  - Docker linux post install steps: https://docs.docker.com/engine/install/linux-postinstall/ , Configure Docker to start on boot with systemd
  - 100GB+ disk space free
+ - Apt packages: `sudo apt install python3-pip wget jq`
 ---
 ## Make Docker respect UFW
 
@@ -34,11 +35,10 @@ sudo systemctl restart docker
 1. Clone this repository: `git clone https://github.com/smk762/notary_docker_main`
 2. Run `./setup` to create the `.env` and `docker-compose.yml` files and build the daemon containers
 3. Run `./start` to launch all the deamons within the docker containers, and tail their logs
-4. Run `./iguana` to launch Iguana for the 3P daemons within the docker containers
+4. Run `./iguana` to launch Iguana for the daemons within the docker containers
 5. Run `./stop` to stop all the deamons
 
-As we will be running multiple instances of the KMD daemon on the server, we will be using a non-standard data folder and ports for the 3P KMD daemon. This is to avoid conflicts with the native KMD daemon running on the host machine for the "main" coins.
-There may also some other minor differences with paths and ports used for daemons within the docker containers, so a [modified `m_notary_main`](https://github.com/KomodoPlatform/dPoW/blob/season-seven/iguana/m_notary_main_docker) file is used to launch Iguana.
+There may be some other minor differences with paths and ports used for daemons within the docker containers, so a [modified `m_notary_main`](https://github.com/KomodoPlatform/dPoW/blob/season-seven/iguana/m_notary_main_docker) file is used to launch Iguana.
 
 ---
 ### Some other commands that may come in handy later:
@@ -107,7 +107,9 @@ docker compose run <service> bash
 mild -reindex
 
 # Monitor the daemon logs
-tail -f ~/.mil/debug.log (you can also do this from outside the container, as the `.mil` folder is a shared volume)
+`tail -f ~/.komodo/debug.log (you can also do this from outside the container, as the `.komodo` folder is a shared volume)`
+Alternatively you can do this via `docker compose logs kmd -f -n 20` from the root folder of this project.
+
 
 # Exit the container
 exit
