@@ -107,7 +107,9 @@ docker compose run <service> bash
 mild -reindex
 
 # Monitor the daemon logs
-tail -f ~/.mil/debug.log (you can also do this from outside the container, as the `.mil` folder is a shared volume)
+`tail -f ~/.komodo/debug.log (you can also do this from outside the container, as the `.komodo` folder is a shared volume)`
+Alternatively you can do this via `docker compose logs kmd -f -n 20` from the root folder of this project.
+
 
 # Exit the container
 exit
