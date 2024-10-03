@@ -7,7 +7,6 @@ echo "Setting up .env file..."
 USER_ID=$(id -u)
 GROUP_ID=$(id -g)
 echo "PUBKEY=${pubkey_main}" > .env
-echo "PUBKEY_3P=${pubkey_3p}" >> .env
 echo "USER_ID=${USER_ID}" >> .env
 echo "GROUP_ID=${GROUP_ID}" >> .env
 
@@ -49,6 +48,7 @@ else
     ./stop $1
 fi
 
+mkdir -p  /home/$USER/.local/bin/
 ln -sf ${script_path}/cli_wrappers/komodo-cli /home/$USER/.local/bin/komodo-cli
 ln -sf ${script_path}/cli_wrappers/komodo-cli /home/$USER/.local/bin/kmd-cli
 ln -sf ${script_path}/cli_wrappers/litecoin-cli /home/$USER/.local/bin/litecoin-cli
