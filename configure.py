@@ -324,7 +324,6 @@ def create_compose_yaml():
             conf.write('      args:\n')
             conf.write('        - USER_ID=$USER_ID\n')
             conf.write('        - GROUP_ID=$GROUP_ID\n')
-            conf.write('        - COMMIT_HASH=156dba6\n')
             conf.write(f'        - SERVICE_CLI="{cli}"\n')
             conf.write('    ports:\n')
             conf.write(f'      - "127.0.0.1:{p2pport}:{p2pport}"\n')
