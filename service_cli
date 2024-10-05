@@ -4,6 +4,7 @@ declare -A service_cli
 # Assign values to the array
 service_cli["iln"]="iln-cli"
 service_cli["gleec"]="gleec-cli"
+service_cli["gleec_old"]="gleec_old-cli"
 service_cli["litecoin"]="litecoin-cli"
 service_cli["kmd"]="komodo-cli"
 service_cli["ccl"]="ccl-cli"

@@ -165,7 +165,7 @@ def get_cli_command(coin) -> str:
     if coin == 'LTC':
         return f"litecoin-cli"
     if coin == "GLEEC_OLD":
-        return f"komodo-cli -ac_name={coin.replace('_OLD','')} -datadir={home}/.komodo/GLEEC_OLD"
+        return f"komodo-cli -ac_name={coin.replace('_OLD','')} -datadir=/home/komodian/.komodo/GLEEC_OLD"
     return f"komodo-cli -ac_name={coin}"
   
 
@@ -290,7 +290,7 @@ def create_confs():
             conf.write('addnode=89.19.26.212 # Marmara2\n')
             main_kmd_addresses = get_nn_kmd_addresses(season, 'Main', 'KMD')
             third_party_kmd_addresses = get_nn_kmd_addresses(season, 'Third_Party', 'KMD')
-            if coin in coins_main and coin not in ["LTC", "PIRATE"]:
+            if coin not in ["LTC", "PIRATE"]:
                 # Whitelists all NN addresses and NN faucet address
                 conf.write('whitelistaddress=RSzqu1ZmAbbM2WUNdqNtPLTcLB54kwLp6D # Notary Faucet\n')
                 for k,v in main_kmd_addresses.items():
@@ -311,6 +311,8 @@ def create_compose_yaml():
                 continue
             if coin == 'KMD':
                 cli = "komodo-cli"
+            elif coin == 'GLEEC_OLD':
+                cli = f"komodo-cli -ac_name=GLEEC -datadir=/home/USERNAME/.komodo:/home/komodian/.komodo/GLEEC_OLD"
             else:
                 cli = f"komodo-cli -ac_name={coin}"
             p2pport = coins_main[coin]["p2pport"]
