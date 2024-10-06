@@ -41,8 +41,6 @@ def create_daemon_confs(coin: str, txindex: int=1, addressindex: int=0, spentind
     with the DexStats bootstraps. If you want to use the bootstrap, without a reindex,
     don't change the indexes. For block explorers, all indexes should be set to 1.
     '''
-    
-
 
     # Create conf file if not existing
     data_path = helper.get_data_path(coin, False)

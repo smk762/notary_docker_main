@@ -1,4 +1,4 @@
-# notary_docker_main
+# Antara_docker_explorers
 
 Simple setup for running Main notary node daemons for dPoW. These are grouped into docker containers, and launched with docker-compose.
 It uses a submodule with the same branch name as this repo in https://github.com/smk762/komodo-install-explorer
@@ -36,8 +36,9 @@ sudo systemctl restart docker
 ## Setup
 
 1. Clone this repository: `git clone https://github.com/smk762/notary_docker_main -b notary-explorer-groups` 
-2. Run `./setup` to install the zcash-params and pip dependencies.
-3. Run `./update` to:
+2. Edit `docker_coins.json` to set the list of coins to run explorers for.
+3. Run `./setup` to install the zcash-params and pip dependencies.
+4. Run `./update` to:
     - Set the coins group to be built
     - Update the insight-explorer submodule
     - Generate daemon config files

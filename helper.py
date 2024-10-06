@@ -102,7 +102,9 @@ def get_rpcport(coin: str) -> str:
 
 def get_conf(coin, container=True):
     conf = COINS_DATA[coin]["conf"]
-    return  f"/home/komodian/{conf}"
+    if container:
+        return  f"/home/komodian/{conf}"
+    return f"{HOME}/conf"
 
 
 def get_data_path(coin, container=True):
