@@ -60,4 +60,4 @@ ln -sf ${script_path}/cli_wrappers/litecoin-cli /home/$USER/.local/bin/ltc-cli
 done
 ln -sf ${script_path}/cli_wrappers/gleec_old-cli /home/$USER/.local/bin/gleec_old-cli
 
-echo "Done! Use ./start to launch your daemons..."
+./start
