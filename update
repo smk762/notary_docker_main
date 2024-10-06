@@ -2,11 +2,20 @@
 
 script_path=$(dirname $(realpath $0))
 
+source /home/${USER}/dPoW/iguana/pubkey.txt
+if test -z "$pubkey"; then
+  read -p "Enter your main pubkey: " pubkey
+  if [ ${#pubkey} -ne 66 ]; then
+    echo "Invalid pubkey length!"
+  fi
+  echo "pubkey=${pubkey}" > /home/${USER}/dPoW/iguana/pubkey.txt
+fi
+
 # Temp to unset docker_host_ip var
 echo "Setting up .env file..."
 USER_ID=$(id -u)
 GROUP_ID=$(id -g)
-echo "PUBKEY=${pubkey_main}" > .env
+echo "PUBKEY=${pubkey}" > .env
 echo "USER_ID=${USER_ID}" >> .env
 echo "GROUP_ID=${GROUP_ID}" >> .env
 

@@ -191,7 +191,7 @@ def get_launch_params(coin):
 
 
 def get_user_pubkey():
-    file = "pubkey.txt"
+    file = f"{home}/dPoW/iguana/pubkey.txt"
     if os.path.exists(file):
         with open(file, 'r') as f:
             for line in f:
