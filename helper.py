@@ -104,12 +104,11 @@ def get_conf(coin, container=True):
     conf = COINS_DATA[coin]["conf"]
     if container:
         return  f"/home/komodian/{conf}"
-    return f"{HOME}/conf"
+    return f"{HOME}/{conf}"
 
 
 def get_data_path(coin, container=True):
-    conf_path = get_conf(coin, container)
-    return os.path.split(conf_path)[0]
+    return os.path.split(get_conf(coin, container))[0]
 
 
 def get_wallet(coin, container=True):
@@ -144,9 +143,6 @@ def get_address(coin: str) -> str:
     pubkey = get_pubkey(coin)
     return get_addr_from_pubkey(pubkey, coin)
 
-
-def get_data_path(coin, container=True):
-    return os.path.split(get_conf(coin, container))[0]
 
 
 def get_debug_file(coin, container=True) -> str:
