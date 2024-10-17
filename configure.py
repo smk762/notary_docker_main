@@ -52,11 +52,6 @@ coins_main = {
         "p2pport": 12985,
         "rpcport": 12986
     },
-    "NINJA": {
-        "daemon": "komodod",
-        "p2pport": 8426,
-        "rpcport": 8427
-    },
     "KOIN": {
         "daemon": "komodod",
         "p2pport": 10701,
@@ -66,11 +61,6 @@ coins_main = {
         "daemon": "komodod",
         "p2pport": 45452,
         "rpcport": 45453
-    },
-    "SUPERNET": {
-        "daemon": "komodod",
-        "p2pport": 11340,
-        "rpcport": 11341
     },
     "THC": {
         "daemon": "komodod",
