@@ -69,4 +69,6 @@ ln -sf ${script_path}/cli_wrappers/litecoin-cli /home/$USER/.local/bin/ltc-cli
 done
 ln -sf ${script_path}/cli_wrappers/gleec_old-cli /home/$USER/.local/bin/gleec_old-cli
 
+cp /home/$USER/.komodo/GLEEC_OLD/GLEEC.conf /home/$USER/.komodo/GLEEC_OLD/GLEEC_OLD.conf 
+
 ./start
