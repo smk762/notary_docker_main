@@ -3,7 +3,7 @@
 set -euxo pipefail
 echo $PWD
 echo "========================================"
-cd ~
+cd /home/komodian
 git clone https://github.com/litecoin-project/litecoin
 cd litecoin
 git checkout beae01d # https://github.com/litecoin-project/litecoin/tree/v0.21.4

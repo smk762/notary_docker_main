@@ -17,7 +17,7 @@ ARG BUILD_PACKAGES="libevent-dev libboost-system-dev libboost-filesystem-dev lib
 ARG DEBIAN_FRONTEND=noninteractive 
 RUN apt update && apt install $BUILD_PACKAGES -y
 
-# Build 
+# Build
 COPY build_scripts/build_ltc.sh /build_ltc.sh
 RUN /build_ltc.sh "${COMMIT_HASH}"
 
