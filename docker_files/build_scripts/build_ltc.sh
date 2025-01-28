@@ -5,6 +5,7 @@ echo $PWD
 echo "========================================"
 cd ~
 git clone https://github.com/litecoin-project/litecoin
+cd litecoin
 git checkout beae01d # https://github.com/litecoin-project/litecoin/tree/v0.21.4
 # apply patches from PR#990 to build dependencies with gcc-11
 wget https://github.com/litecoin-project/litecoin/pull/990.diff

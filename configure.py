@@ -15,6 +15,8 @@ script_path = os.path.realpath(os.path.dirname(__file__))
 with open(f'assetchains.json') as file:
     assetchains = json.load(file)
 
+
+# TODO: auto-source this from 7776/7779 files
 coins_main = {
     "CCL": {
         "daemon": "komodod",
