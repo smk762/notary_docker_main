@@ -25,7 +25,7 @@ git pull || sleep 5
 
 # Update assetchains.json
 rm assetchains.json
-wget https://raw.githubusercontent.com/KomodoPlatform/dPoW/update/s8-pubkeys/iguana/assetchains.json
+wget https://raw.githubusercontent.com/KomodoPlatform/dPoW/dev/iguana/assetchains.json
 
 # Creating launch files
 echo "Setting up launch files..."

@@ -67,15 +67,20 @@ coins_main = {
         "p2pport": 36789,
         "rpcport": 36790
     },
-    "DOC": {
+    "BCZERO": {
         "daemon": "komodod",
-        "p2pport": 62415,
-        "rpcport": 62416
+        "p2pport": 45833,
+        "rpcport": 45834
     },
-    "MARTY": {
+    "RAPH": {
         "daemon": "komodod",
-        "p2pport": 52592,
-        "rpcport": 52593
+        "p2pport": 30260,
+        "rpcport": 30261
+    },
+    "MDX": {
+        "daemon": "komodod",
+        "p2pport": 18481,
+        "rpcport": 18482
     }
 }
 
@@ -176,7 +181,10 @@ def get_launch_params(coin):
             launch_str = ' '.join(params)
             launch += f" {launch_str}"
     pubkey = get_user_pubkey()
-    launch += f" -pubkey={pubkey}"
+    if coin not in ["LTC"]:
+        launch += f" -pubkey={pubkey}"
+    else:
+        launch += f" -daemon"
     return launch
 
 
